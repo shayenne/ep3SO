@@ -20,9 +20,17 @@ def copiaArquivo(origem, destino, posicao):
                 else:
                     break
 
-                
-if __name__=="__main__":
-    escreveDados("ABCDEFGH")
+def leDados(arquivo, inicio, fim):
+    with open(arquivo, 'rb') as f:
+        f.seek(inicio)
+        data = f.read(fim-inicio)
+    return data
 
-    print "Ve la"
-    copiaArquivo("somefile.bin", "me", 10)
+
+if __name__=="__main__":
+    escreveDados("test", "ABCDEFGHSHAYENNE", 0)
+
+    copiaArquivo("test", "me", 10)
+
+    # le dados de um arquivo [inicio, fim)
+    print leDados("me", 10, 18)

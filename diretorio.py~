@@ -1,0 +1,23 @@
+
+from datetime import datetime
+
+class Diretorio:
+
+    # Atributos de um arquivo regular
+    nome = None
+    tc = None     # Tempo de criacao
+    tm = None     # Tempo de modificacao
+    ta = None     # Tempo de acesso
+    cont = None   # Quantidade de elementos dentro do diretorio
+    
+    def __init__(self, nome):
+        #
+
+    def mkdir(self, nome):
+        # Nunca se tentara criar um diretorio que ja existe
+        self.nome = nome
+        self.ta = self.tm = self.tc = str(datetime.now())
+        self.cont = 0
+
+        
+        

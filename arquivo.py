@@ -9,14 +9,15 @@ class Arquivo:
     dados = None
 
     def __init__(self, nome):
-        # se o nome não existir no sistema, cria um novo
+        # se o nome nao existir no sistema, cria um novo
+        self.nome = nome
         return None
 
     def touch(self):
         #se o arquivo existir
         #tm = tempo atual, ta tbm?
 
-        #se não
+        #se nao
         #__init__(nome)
 
     def cp(self, origem):
@@ -24,4 +25,4 @@ class Arquivo:
         # se o arquivo destino nao existir, __init__(destino)
 	
     def rm(self):
-        # remove do sistema de arquivos e apaga da FAT (não precisa zerar os bits ocupados)
+        # remove do sistema de arquivos e apaga da FAT (nao precisa zerar os bits ocupados)

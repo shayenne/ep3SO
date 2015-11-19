@@ -31,23 +31,22 @@ class SistemaArquivos:
         self.raiz = 2
         self.dirs = 3
 
-        makeEmptyBin(fileSystem, 28000)
+        print "Estou criando um novo arquivo ", self.bitmap, self.raiz, self.dirs
+
+        # Demora para criar um arquivo de 100MB
+        makeEmptyBin(fileSystem, 100000000)
 
         escreveIntBin(fileSystem, 0, self.bitmap)
-        switchBitmap(fileSystem, 0)
-        switchBitmap(fileSystem, 1)
-        switchBitmap(fileSystem, 2)
-        switchBitmap(fileSystem, 3)
-        switchBitmap(fileSystem, 4)
-        switchBitmap(fileSystem, 5)
-        switchBitmap(fileSystem, 6)
-        #switchBitmap(fileSystem, 3)
-        if not getBitmap(fileSystem, 8):
-            print "Encontrei espaco vazio"
-        else:
-            print "Sai daqui"
         escreveIntBin(fileSystem, 2, self.raiz)
         escreveIntBin(fileSystem, 4, self.dirs)
+        
+        for i in xrange(7):
+            switchBitmap(fileSystem, i)
+
+        
+    def getRaiz(self):
+        return self.raiz
+
 
     # Le o bloco de numero "bloco" e retorna o proximo apontado pelo bloco
     # lido
@@ -61,7 +60,7 @@ class SistemaArquivos:
         cont = int(struct.unpack("h", data[2:4])[0])
         print cont
 
-        return prox, data[4:]
+        return prox, cont, data[4:]
 
     def leArquivo(self, endereco):
         prox, conteudo = self.leBloco(endereco)
@@ -72,6 +71,7 @@ class SistemaArquivos:
 
 
     # OBS: Nunca recebe um conteudo maior que 4 kB
+    # Recebe um conteudo e escreve no bloco apontado por endereco
     def escreveBloco(self, endereco, conteudo):
         ini = endereco*self.tam
         escreveIntervalo(self.nome, ini, ini+self.tam, conteudo)
@@ -81,7 +81,8 @@ class SistemaArquivos:
         for i in xrange(25000):
             if not getBitmap(self.nome, i):
                 return i
-        return "ACABOU O ESPACO"
+        print "ACABOU O ESPACO"
+        return False
 
 if __name__=="__main__":
     teste = SistemaArquivos("primeiro")

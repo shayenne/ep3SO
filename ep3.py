@@ -1,5 +1,9 @@
 import readline
-
+import binFunc
+from sistema import *
+import time
+#import arquivo
+#import diretorio
 
 
 if __name__ == "__main__":
@@ -9,12 +13,19 @@ if __name__ == "__main__":
        
         if   cmd[0] == "mount":
             print "Quero montar o sistema de arquivos"
+            ini = time.time()
+            fileSystem = SistemaArquivos(cmd[1])
+            fim = time.time()
 
+            print "Demorou exatamente ", fim - ini
+            
         elif cmd[0] == "cp":
             print "Quero copiar"
 
         elif cmd[0] == "mkdir":
             print "Cria diretorio"
+            pasta = Diretorio(fileSystem.getRaiz())
+            pasta.mkdir(cmd[1])
 
         elif cmd[0] == "rmdir":
             print "Apaga diretorio, se nao vazio, avisa o que apagou"
@@ -41,3 +52,5 @@ if __name__ == "__main__":
             print "Devo desmontar o sistema de arquivos"
             
         cmd = raw_input("[ep3]: ").split()
+
+

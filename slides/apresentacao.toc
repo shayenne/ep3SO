@@ -1,0 +1,14 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{Introdu\IeC {\c c}\IeC {\~a}o}{2}{0}{1}
+\beamer@sectionintoc {2}{Intera\IeC {\c c}\IeC {\~a}o com usu\IeC {\'a}rio}{4}{0}{2}
+\beamer@sectionintoc {3}{Vis\IeC {\~a}o Geral}{7}{0}{3}
+\beamer@sectionintoc {4}{Gerenciador de Espa\IeC {\c c}o Livre}{10}{0}{4}
+\beamer@subsectionintoc {4}{1}{First Fit}{13}{0}{4}
+\beamer@subsectionintoc {4}{2}{Next Fit}{14}{0}{4}
+\beamer@subsectionintoc {4}{3}{Quick Fit}{15}{0}{4}
+\beamer@sectionintoc {5}{Substitui\IeC {\c c}\IeC {\~a}o de P\IeC {\'a}gina}{17}{0}{5}
+\beamer@subsectionintoc {5}{1}{NRUP}{21}{0}{5}
+\beamer@subsectionintoc {5}{2}{FIFO}{22}{0}{5}
+\beamer@subsectionintoc {5}{3}{Second Chance}{23}{0}{5}
+\beamer@subsectionintoc {5}{4}{LRUP}{25}{0}{5}
+\beamer@sectionintoc {6}{Resultados}{26}{0}{6}

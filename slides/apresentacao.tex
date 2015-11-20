@@ -126,12 +126,92 @@ Sistemas Operacionais
 \begin{frame}
 \frametitle{Suposições adotadas}
 \begin{itemize}
-\item Processos ordenados segundo t0 de forma crescente
-\item Processos bem comportados (não escrevem onde não devem)
-\item Espaço suficiente na memória virtual
-\item Tempo de execução do processo: tf - t0
+\item Usuário comportado (não irá criar arquivos e pastas com nomes iguais)
+\item 
 \end{itemize}
 \end{frame}
+
+
+
+
+%------------------------------------------------
+\section{Visão Geral} 
+%------------------------------------------------
+\begin{frame}
+\begin{LARGE}
+\begin{center}
+Visão Geral
+\end{center}
+\end{LARGE}
+\end{frame}
+
+%------------------------------------------------
+\subsection{Partição do Sistema}
+%------------------------------------------------
+\begin{frame}
+\frametitle{Partição do Sistema}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{particao2png.png}
+\end{figure}
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\subsection{Superbloco}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Superbloco}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{superblocopng.png}
+\end{figure}
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\subsection{Gerenciador de Espaço Livre}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Gerenciador de Espaço Livre}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{gerenciadorpng.png}
+\end{figure}
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\subsection{Diretório Raiz}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Diretório Raiz}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{raizpng.png}
+\end{figure}
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\subsection{Arquivos e Diretórios}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Arquivos e Diretórios}
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{arquivospng.png}
+\end{figure}
+\justifying
+\end{frame}
+
 
 
 %------------------------------------------------
@@ -182,49 +262,6 @@ Interação com usuário
 \end{frame}
 
 
-%------------------------------------------------
-\section{Visão Geral} 
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\begin{LARGE}
-\begin{center}
-Visão Geral
-\end{center}
-\end{LARGE}
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Processos}
-
-\begin{itemize}
-\item Processo como objeto (com informação da lista)
-
-\item Thread por processo
-
-\item Sinal para inicialização
-
-\item Dormem até t0
-
-\end{itemize}
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Processos}
-
-\begin{itemize}
-\item Processo na memória virtual: escreve em todo o seu espaço o seu pid
-
-\item Acesso na posição p: a página que possui essa posição é levada para a memória física
-\end{itemize}
-\justifying
-\end{frame}
-
 
 %------------------------------------------------
 \section{Gerenciador de Espaço Livre} 
@@ -256,18 +293,6 @@ Gerenciamento de Espaço Livre
 \end{frame}
 
 %------------------------------------------------
-\begin{frame}
-\frametitle{Gerenciamento de Espaço Livre}
-\begin{itemize}
-\item Caso não encontre espaço, retorna None (NULL)
-
-\item Base e o limite de cada processo fica registrado em um dicionário (orientação MMU) 
-
-\item Dicionário: [ pid ][ base ][ páginas ]
-\end{itemize}
-\end{frame}
-
-
 \subsection{First Fit}
 %------------------------------------------------
 \begin{frame}
@@ -282,21 +307,6 @@ Gerenciamento de Espaço Livre
 \justifying
 \end{frame}
 
-%------------------------------------------------
-\subsection{Next Fit} 
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Next Fit}
-\begin{itemize}
-
-\item Primeira busca sempre do início da lista
-
-\item Outras buscas inicializadas a partir da última 
-referência
-\end{itemize}
-\justifying
-\end{frame}
 
 %------------------------------------------------
 \subsection{Quick Fit}
@@ -388,15 +398,6 @@ Como funciona?
 \end{enumerate}
 \justifying
 \end{frame}
-
-
-%------------------------------------------------
-%\begin{frame}
-%\frametitle{MMU}
-%IMAGEM MAPEAMENTO MMU
-%\justifying
-%\end{frame}
-
 
 %------------------------------------------------
 \begin{frame}

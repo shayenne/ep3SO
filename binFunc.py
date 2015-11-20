@@ -120,10 +120,7 @@ def leIntervalo(arqmem, ini, fim):
     return data
 
 if __name__=="__main__":
-    escreveDados("test", "ABCDEFGHSHAYENNE", 0)
-
-    escreveDados("test", "ESCREVI", 30)
-
+    escreveDados("test", "2015-10-11 10:29", 0)
 
     escreveIntBin("primeiro", 0, 1)
     escreveIntBin("primeiro", 2, 2)
@@ -136,12 +133,12 @@ if __name__=="__main__":
 
     print bitmap, raiz, dirs
 
-    escreveDados("data", bin(100000000), 0)
+    #escreveDados("data", bin(100000000), 0)
 
-    copiaArquivo("test", "me", 10)
+    #copiaArquivo("test", "me", 10)
 
     # le dados de um arquivo [inicio, fim)
-    print leDados("me", 10, 18)
+    #print leDados("me", 10, 18)
 
 
-    copiaArquivo("test", "primeiro", 4000)
+    #copiaArquivo("test", "primeiro", 4000)

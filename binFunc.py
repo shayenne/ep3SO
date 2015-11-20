@@ -103,7 +103,7 @@ def escreveIntervalo(arqmem, ini, fim, conteudo):
     # Acessa uma posicao especifica do arquivo de memoria
     mapmem = memory_map(arqmem)
 
-    print len(conteudo), fim-ini
+    #print len(conteudo), fim-ini
     mapmem[ini:ini+len(conteudo)] = conteudo
 
     mapmem.close()

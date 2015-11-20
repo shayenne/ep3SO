@@ -1,18 +1,15 @@
 \beamer@endinputifotherversion {3.24pt}
 \beamer@sectionintoc {1}{Introdu\IeC {\c c}\IeC {\~a}o}{2}{0}{1}
 \beamer@sectionintoc {2}{Vis\IeC {\~a}o Geral}{4}{0}{2}
-\beamer@subsectionintoc {2}{1}{Parti\IeC {\c c}\IeC {\~a}o do Sistema}{5}{0}{2}
+\beamer@subsectionintoc {2}{1}{Estrutura da Parti\IeC {\c c}\IeC {\~a}o}{5}{0}{2}
 \beamer@subsectionintoc {2}{2}{Superbloco}{6}{0}{2}
 \beamer@subsectionintoc {2}{3}{Gerenciador de Espa\IeC {\c c}o Livre}{7}{0}{2}
 \beamer@subsectionintoc {2}{4}{Diret\IeC {\'o}rio Raiz}{8}{0}{2}
 \beamer@subsectionintoc {2}{5}{Arquivos e Diret\IeC {\'o}rios}{9}{0}{2}
-\beamer@sectionintoc {3}{Intera\IeC {\c c}\IeC {\~a}o com usu\IeC {\'a}rio}{10}{0}{3}
-\beamer@sectionintoc {4}{Gerenciador de Espa\IeC {\c c}o Livre}{13}{0}{4}
-\beamer@subsectionintoc {4}{1}{First Fit}{15}{0}{4}
-\beamer@subsectionintoc {4}{2}{Quick Fit}{16}{0}{4}
-\beamer@sectionintoc {5}{Substitui\IeC {\c c}\IeC {\~a}o de P\IeC {\'a}gina}{18}{0}{5}
-\beamer@subsectionintoc {5}{1}{NRUP}{22}{0}{5}
-\beamer@subsectionintoc {5}{2}{FIFO}{23}{0}{5}
-\beamer@subsectionintoc {5}{3}{Second Chance}{24}{0}{5}
-\beamer@subsectionintoc {5}{4}{LRUP}{26}{0}{5}
-\beamer@sectionintoc {6}{Resultados}{27}{0}{6}
+\beamer@subsectionintoc {2}{6}{Atributos}{10}{0}{2}
+\beamer@sectionintoc {3}{Intera\IeC {\c c}\IeC {\~a}o com o simulador}{11}{0}{3}
+\beamer@sectionintoc {4}{Resultados}{14}{0}{4}
+\beamer@subsectionintoc {4}{1}{Sistema de arquivo vazio}{15}{0}{4}
+\beamer@subsectionintoc {4}{2}{Sistema de arquivos com 10MB ocupados}{23}{0}{4}
+\beamer@subsectionintoc {4}{3}{Sistema de arquivos com 50MB ocupados}{31}{0}{4}
+\beamer@sectionintoc {5}{Experimentos}{39}{0}{5}

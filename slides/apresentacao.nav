@@ -13,8 +13,8 @@
 \headcommand {\beamer@subsectionpages {2}{3}}
 \headcommand {\slideentry {2}{0}{4}{4/4}{}{0}}
 \headcommand {\beamer@framepages {4}{4}}
-\headcommand {\beamer@subsectionentry {0}{2}{1}{5}{Parti\IeC {\c c}\IeC {\~a}o do Sistema}}\headcommand {\beamer@subsectionpages {4}{4}}
-\headcommand {\slideentry {2}{1}{1}{5/5}{Parti\IeC {\c c}\IeC {\~a}o do Sistema}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{5}{Estrutura da Parti\IeC {\c c}\IeC {\~a}o}}\headcommand {\beamer@subsectionpages {4}{4}}
+\headcommand {\slideentry {2}{1}{1}{5/5}{Estrutura da Parti\IeC {\c c}\IeC {\~a}o}{0}}
 \headcommand {\beamer@framepages {5}{5}}
 \headcommand {\beamer@subsectionentry {0}{2}{2}{6}{Superbloco}}\headcommand {\beamer@subsectionpages {5}{5}}
 \headcommand {\slideentry {2}{2}{1}{6/6}{Superbloco}{0}}
@@ -28,66 +28,105 @@
 \headcommand {\beamer@subsectionentry {0}{2}{5}{9}{Arquivos e Diret\IeC {\'o}rios}}\headcommand {\beamer@subsectionpages {8}{8}}
 \headcommand {\slideentry {2}{5}{1}{9/9}{Arquivos e Diret\IeC {\'o}rios}{0}}
 \headcommand {\beamer@framepages {9}{9}}
-\headcommand {\sectionentry {3}{Intera\IeC {\c c}\IeC {\~a}o com usu\IeC {\'a}rio}{10}{Intera\IeC {\c c}\IeC {\~a}o com usu\IeC {\'a}rio}{0}}
-\headcommand {\beamer@sectionpages {4}{9}}
-\headcommand {\beamer@subsectionpages {9}{9}}
-\headcommand {\slideentry {3}{0}{2}{10/10}{}{0}}
+\headcommand {\beamer@subsectionentry {0}{2}{6}{10}{Atributos}}\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\slideentry {2}{6}{1}{10/10}{Atributos}{0}}
 \headcommand {\beamer@framepages {10}{10}}
-\headcommand {\slideentry {3}{0}{3}{11/11}{}{0}}
+\headcommand {\sectionentry {3}{Intera\IeC {\c c}\IeC {\~a}o com o simulador}{11}{Intera\IeC {\c c}\IeC {\~a}o com o simulador}{0}}
+\headcommand {\beamer@sectionpages {4}{10}}
+\headcommand {\beamer@subsectionpages {10}{10}}
+\headcommand {\slideentry {3}{0}{2}{11/11}{}{0}}
 \headcommand {\beamer@framepages {11}{11}}
-\headcommand {\slideentry {3}{0}{4}{12/12}{}{0}}
+\headcommand {\slideentry {3}{0}{3}{12/12}{}{0}}
 \headcommand {\beamer@framepages {12}{12}}
-\headcommand {\sectionentry {4}{Gerenciador de Espa\IeC {\c c}o Livre}{13}{Gerenciador de Espa\IeC {\c c}o Livre}{0}}
-\headcommand {\beamer@sectionpages {10}{12}}
-\headcommand {\beamer@subsectionpages {10}{12}}
-\headcommand {\slideentry {4}{0}{5}{13/13}{}{0}}
+\headcommand {\slideentry {3}{0}{4}{13/13}{}{0}}
 \headcommand {\beamer@framepages {13}{13}}
-\headcommand {\slideentry {4}{0}{6}{14/14}{}{0}}
+\headcommand {\sectionentry {4}{Resultados}{14}{Resultados}{0}}
+\headcommand {\beamer@sectionpages {11}{13}}
+\headcommand {\beamer@subsectionpages {11}{13}}
+\headcommand {\slideentry {4}{0}{5}{14/14}{}{0}}
 \headcommand {\beamer@framepages {14}{14}}
-\headcommand {\beamer@subsectionentry {0}{4}{1}{15}{First Fit}}\headcommand {\beamer@subsectionpages {13}{14}}
-\headcommand {\slideentry {4}{1}{1}{15/15}{First Fit}{0}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{15}{Sistema de arquivo vazio}}\headcommand {\beamer@subsectionpages {14}{14}}
+\headcommand {\slideentry {4}{1}{1}{15/15}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {15}{15}}
-\headcommand {\beamer@subsectionentry {0}{4}{2}{16}{Quick Fit}}\headcommand {\beamer@subsectionpages {15}{15}}
-\headcommand {\slideentry {4}{2}{1}{16/16}{Quick Fit}{0}}
+\headcommand {\slideentry {4}{1}{2}{16/16}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {16}{16}}
-\headcommand {\slideentry {4}{2}{2}{17/17}{Quick Fit}{0}}
+\headcommand {\slideentry {4}{1}{3}{17/17}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {17}{17}}
-\headcommand {\sectionentry {5}{Substitui\IeC {\c c}\IeC {\~a}o de P\IeC {\'a}gina}{18}{Substitui\IeC {\c c}\IeC {\~a}o de P\IeC {\'a}gina}{0}}
-\headcommand {\beamer@sectionpages {13}{17}}
-\headcommand {\beamer@subsectionpages {16}{17}}
-\headcommand {\slideentry {5}{0}{3}{18/18}{}{0}}
+\headcommand {\slideentry {4}{1}{4}{18/18}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {18}{18}}
-\headcommand {\slideentry {5}{0}{4}{19/19}{}{0}}
+\headcommand {\slideentry {4}{1}{5}{19/19}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {19}{19}}
-\headcommand {\slideentry {5}{0}{5}{20/20}{}{0}}
+\headcommand {\slideentry {4}{1}{6}{20/20}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {20}{20}}
-\headcommand {\slideentry {5}{0}{6}{21/21}{}{0}}
+\headcommand {\slideentry {4}{1}{7}{21/21}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {21}{21}}
-\headcommand {\beamer@subsectionentry {0}{5}{1}{22}{NRUP}}\headcommand {\beamer@subsectionpages {18}{21}}
-\headcommand {\slideentry {5}{1}{1}{22/22}{NRUP}{0}}
+\headcommand {\slideentry {4}{1}{8}{22/22}{Sistema de arquivo vazio}{0}}
 \headcommand {\beamer@framepages {22}{22}}
-\headcommand {\beamer@subsectionentry {0}{5}{2}{23}{FIFO}}\headcommand {\beamer@subsectionpages {22}{22}}
-\headcommand {\slideentry {5}{2}{1}{23/23}{FIFO}{0}}
+\headcommand {\beamer@subsectionentry {0}{4}{2}{23}{Sistema de arquivos com 10MB ocupados}}\headcommand {\beamer@subsectionpages {15}{22}}
+\headcommand {\slideentry {4}{2}{1}{23/23}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {23}{23}}
-\headcommand {\beamer@subsectionentry {0}{5}{3}{24}{Second Chance}}\headcommand {\beamer@subsectionpages {23}{23}}
-\headcommand {\slideentry {5}{3}{1}{24/24}{Second Chance}{0}}
+\headcommand {\slideentry {4}{2}{2}{24/24}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {24}{24}}
-\headcommand {\slideentry {5}{3}{2}{25/25}{Second Chance}{0}}
+\headcommand {\slideentry {4}{2}{3}{25/25}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {25}{25}}
-\headcommand {\beamer@subsectionentry {0}{5}{4}{26}{LRUP}}\headcommand {\beamer@subsectionpages {24}{25}}
-\headcommand {\slideentry {5}{4}{1}{26/26}{LRUP}{0}}
+\headcommand {\slideentry {4}{2}{4}{26/26}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {26}{26}}
-\headcommand {\sectionentry {6}{Resultados}{27}{Resultados}{0}}
-\headcommand {\beamer@sectionpages {18}{26}}
-\headcommand {\beamer@subsectionpages {26}{26}}
-\headcommand {\slideentry {6}{0}{2}{27/27}{}{0}}
+\headcommand {\slideentry {4}{2}{5}{27/27}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {27}{27}}
-\headcommand {\slideentry {6}{0}{3}{28/28}{}{0}}
+\headcommand {\slideentry {4}{2}{6}{28/28}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {28}{28}}
-\headcommand {\slideentry {6}{0}{4}{29/29}{}{0}}
+\headcommand {\slideentry {4}{2}{7}{29/29}{Sistema de arquivos com 10MB ocupados}{0}}
 \headcommand {\beamer@framepages {29}{29}}
-\headcommand {\beamer@partpages {1}{29}}
-\headcommand {\beamer@subsectionpages {27}{29}}
-\headcommand {\beamer@sectionpages {27}{29}}
-\headcommand {\beamer@documentpages {29}}
-\headcommand {\def \inserttotalframenumber {29}}
+\headcommand {\slideentry {4}{2}{8}{30/30}{Sistema de arquivos com 10MB ocupados}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\beamer@subsectionentry {0}{4}{3}{31}{Sistema de arquivos com 50MB ocupados}}\headcommand {\beamer@subsectionpages {23}{30}}
+\headcommand {\slideentry {4}{3}{1}{31/31}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {4}{3}{2}{32/32}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\slideentry {4}{3}{3}{33/33}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {4}{3}{4}{34/34}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {4}{3}{5}{35/35}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {4}{3}{6}{36/36}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\slideentry {4}{3}{7}{37/37}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\slideentry {4}{3}{8}{38/38}{Sistema de arquivos com 50MB ocupados}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\sectionentry {5}{Experimentos}{39}{Experimentos}{0}}
+\headcommand {\beamer@sectionpages {14}{38}}
+\headcommand {\beamer@subsectionpages {31}{38}}
+\headcommand {\slideentry {5}{0}{9}{39/39}{}{0}}
+\headcommand {\beamer@framepages {39}{39}}
+\headcommand {\slideentry {5}{0}{10}{40/40}{}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\slideentry {5}{0}{11}{41/41}{}{0}}
+\headcommand {\beamer@framepages {41}{41}}
+\headcommand {\slideentry {5}{0}{12}{42/42}{}{0}}
+\headcommand {\beamer@framepages {42}{42}}
+\headcommand {\slideentry {5}{0}{13}{43/43}{}{0}}
+\headcommand {\beamer@framepages {43}{43}}
+\headcommand {\slideentry {5}{0}{14}{44/44}{}{0}}
+\headcommand {\beamer@framepages {44}{44}}
+\headcommand {\slideentry {5}{0}{15}{45/45}{}{0}}
+\headcommand {\beamer@framepages {45}{45}}
+\headcommand {\slideentry {5}{0}{16}{46/46}{}{0}}
+\headcommand {\beamer@framepages {46}{46}}
+\headcommand {\slideentry {5}{0}{17}{47/47}{}{0}}
+\headcommand {\beamer@framepages {47}{47}}
+\headcommand {\slideentry {5}{0}{18}{48/48}{}{0}}
+\headcommand {\beamer@framepages {48}{48}}
+\headcommand {\slideentry {5}{0}{19}{49/49}{}{0}}
+\headcommand {\beamer@framepages {49}{49}}
+\headcommand {\slideentry {5}{0}{20}{50/50}{}{0}}
+\headcommand {\beamer@framepages {50}{50}}
+\headcommand {\slideentry {5}{0}{21}{51/51}{}{0}}
+\headcommand {\beamer@framepages {51}{51}}
+\headcommand {\beamer@partpages {1}{51}}
+\headcommand {\beamer@subsectionpages {39}{51}}
+\headcommand {\beamer@sectionpages {39}{51}}
+\headcommand {\beamer@documentpages {51}}
+\headcommand {\def \inserttotalframenumber {51}}

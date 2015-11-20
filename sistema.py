@@ -180,11 +180,38 @@ class SistemaArquivos:
     # Imprime o conteudo do arquivo que comeca no bloco "endereco"
     #.............................................................
     def leArquivo(self, endereco):
+        global ent
         prox, cont, conteudo = self.leBloco(endereco)
+
         while prox != -1:
-            print conteudo
+            if cont != -1:# Eh um diretorio
+                for i in xrange(cont):
+                    nome = self.ajustaNome(conteudo[0+i*ent:12+i*ent])
+                    tam  = int(str(conteudo[62+i*ent:71+i*ent]))
+                    mod  = conteudo[30+i*ent:46+i*ent]
+
+                    bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
+
+                    p, c, ctd = self.leBloco(bl[0])
+                    if c == -1:
+                        print nome, tam, mod
+                    else:
+                        print "[{}]".format(nome)
+            else:
+                print conteudo
+
             prox, cont, conteudo = self.leBloco(prox)
-        print conteudo
+
+        # Ultimo bloco
+        if cont != -1: # Eh um diretorio
+            for i in xrange(cont):
+                nome = self.ajustaNome(conteudo[0+i*ent:12+i*ent])
+                tam  = conteudo[62+i*ent:71+i*ent]
+                mod  = conteudo[30+i*ent:46+i*ent]
+                    
+                print nome, tam, mod
+        else:
+            print conteudo
 
 
     # OBS: Nunca recebe um conteudo maior que 4 kB
@@ -259,14 +286,14 @@ class SistemaArquivos:
         ant = blocoPai
         while prox != -1 and cont == 56:
             ant = prox
-            prox, cont, conteudo = self.leBloco(prox)
+            prox, cont, conteudo = self.leBloco(ant)
 
         espaco = self.FirstFit()
         if espaco:
             # Marco o espaco como ocupado
             switchBitmap(self.nome, espaco)
             # Adiciono entrada na pasta pai
-            entrada = self.esticaNome(caminho[len(caminho)-1])+struct.pack("h", espaco)+self.getTimeNow()+self.getTimeNow()+self.getTimeNow()+"000000000"
+            entrada = self.esticaNome(caminho[len(caminho)-1])+struct.pack("h", espaco)+self.getTimeNow()+self.getTimeNow()+self.getTimeNow()+str("000000000")
 
             conteudo = conteudo[:cont*ent]+entrada+conteudo[(cont+1)*ent:]
             cont += 1
@@ -321,6 +348,11 @@ if __name__=="__main__":
     #teste.leArquivo(teste.devolveBloco("/comida/agua"))
 
     teste.criaDiretorio("/roupa")
-    teste.leArquivo(2)
     teste.criaDiretorio("/casa")
+    teste.criaDiretorio("/movo")
+    teste.criaArquivo("/casa/cachorro")
+    teste.criaDiretorio("/casa/animal")
+    teste.criaArquivo("/gato")
     teste.leArquivo(2)
+    teste.leArquivo(teste.devolveBloco("/gato"))
+    teste.leArquivo(teste.devolveBloco("/casa"))

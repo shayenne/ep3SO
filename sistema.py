@@ -19,6 +19,7 @@ class SistemaArquivos:
     def __init__(self, nome):
         # se o sistema de arquivos nao existe, criar um novo
         self.nome = nome
+    
         try:
             with open(self.nome, 'rb') as fileSystem:
                 print "Sistema existe"
@@ -43,7 +44,7 @@ class SistemaArquivos:
         print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
 
         # Demora para criar um arquivo de 100MB
-        makeEmptyBin(fileSystem, 1000000)
+        makeEmptyBin(fileSystem, 3000000)
 
         escreveIntBin(fileSystem, 0, self.bitmap)
         escreveIntBin(fileSystem, 2, self.raiz)
@@ -51,22 +52,26 @@ class SistemaArquivos:
 
         #self.escreveBloco(0, struct..)
         
+        # Inicializa o diretorio raiz com 5 blocos
+        startMM(self.nome)
         for i in xrange(7):
             switchBitmap(fileSystem, i)
 
-        # Inicializa o diretorio raiz com 5 blocos
+        
         self.escreveBloco(2, struct.pack("h", 3)+struct.pack("h", 0))
         self.escreveBloco(3, struct.pack("h", 4)+struct.pack("h", 0))
         self.escreveBloco(4, struct.pack("h", 5)+struct.pack("h", 0))
         self.escreveBloco(5, struct.pack("h", 6)+struct.pack("h", 0))
         self.escreveBloco(6, struct.pack("h", -1)+struct.pack("h", 0))
-
+        endMM()
 
     #................................................................
     def criaDiretorio(self, nome):
         self.criaArquivo(nome)
         
         ant = self.devolveBloco(nome)
+        # Diminui a qtd de bitmaps
+        startMM(self.nome)
         for i in xrange(4):
             novo = self.FirstFit()
             print "FirstFit devolveu", novo, "em criaDiretorio"
@@ -78,8 +83,10 @@ class SistemaArquivos:
                 break
 
             ant = novo
-        self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
         
+        self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
+        # Finaliza o bitmap
+        endMM()
 
     #..................................................................
     def devolveBloco(self, nome):
@@ -206,7 +213,7 @@ class SistemaArquivos:
                     #print "O contador e", c
                     if c == -1:
                         #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
-                        tam  = struct.unpack("h", conteudo[62+i*ent:64+i*ent])[0] 
+                        tam  = struct.unpack("q", conteudo[62+i*ent:70+i*ent])[0] 
                         mod  = conteudo[30+i*ent:46+i*ent]
                         print nome, tam, mod
                     else:
@@ -239,14 +246,14 @@ class SistemaArquivos:
     def escreveBloco(self, endereco, conteudo):
         ini = endereco*self.tam
         escreveIntervalo(self.nome, ini, ini+self.tam, conteudo)
-
+        
 
     #......................................................
     # Retorna o primeiro endereco de bloco vazio encontrado
     #......................................................
     def FirstFit(self):
         # Atualizar para 25000 que eh a qtd de blocos disponiveis
-        return getBitmap(self.nome, 250)
+        return getBitmap(self.nome, 750)
         print "ACABOU O ESPACO"
         return False
 
@@ -289,9 +296,9 @@ class SistemaArquivos:
 
         # Posicao da data de acesso no conteudo do diretorio
         conteudo = conteudo[:46+entrada]+self.getTimeNow()+conteudo[62+entrada:]
-        
+        startMM(self.nome)
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
-
+        endMM()
 
     #.............................................
     def atualizaTamanho(self, arquivo, tamanho):
@@ -310,8 +317,9 @@ class SistemaArquivos:
 
         # Posicao da data de acesso no conteudo do diretorio
         conteudo = conteudo[:62+entrada]+struct.pack("q", tamanho)
-        
+        startMM(self.nome)
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
+        endMM()
 
     #..................................................
     def criaArquivo(self, arquivo):
@@ -338,10 +346,13 @@ class SistemaArquivos:
         while prox != -1 and cont == 62:
             ant = prox
             prox, cont, conteudo = self.leBloco(ant)
-
+        # Diminui a qtd de bitmaps
+        startMM(self.nome)
         espaco = self.FirstFit()
+        endMM()
         print "FirstFit devolveu", espaco, "em criaArquivo"
         if espaco:
+            startMM(self.nome)
             # Marco o espaco como ocupado
             switchBitmap(self.nome, espaco)
             # Adiciono entrada na pasta pai
@@ -349,11 +360,12 @@ class SistemaArquivos:
 
             conteudo = conteudo[:cont*ent]+entrada+conteudo[(cont+1)*ent:]
             cont += 1
-        
+            
             self.escreveBloco(ant, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 
             # Escrevo o conteudo do bloco espaco
             self.escreveBloco(espaco, struct.pack("h", -1)+struct.pack("h", -1))
+            endMM()
             return True
         else:
             print "ACABOU O ESPACO em criaArquivo"
@@ -376,6 +388,8 @@ class SistemaArquivos:
         qtd = (tamanho / 3996) + 1
 
         bls = [self.devolveBloco(destino)]
+        # Diminuir a criacao de bitmaps
+        startMM(self.nome)
         for i in xrange(qtd-1):
             novo = self.FirstFit()
             print "FirstFit devolveu ", novo, "em copiaArquivo"
@@ -386,14 +400,19 @@ class SistemaArquivos:
                 print "Nao foi possivel copiar o arquivo"
                 for j in xrange(len(bls)):
                     switchBitmap(self.nome, bls[j])
+                endMM()
                 return
-            
-
+    
+    
         for i in xrange(qtd - 1):
             self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
             
         self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
 
+        # Finaliza o bitmap usado no FirstFit
+        endMM()
+
+        print "Estou mandando escrever um tamanho de ", tamanho
         self.atualizaTamanho(destino, tamanho)
 
 

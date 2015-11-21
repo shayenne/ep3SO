@@ -4,6 +4,8 @@ import mmap
 import os
 
 
+mapmem = None
+
 def makeEmptyBin(filename, size):
     with open(filename, 'wb') as f:
         for i in xrange(size):
@@ -49,8 +51,9 @@ def leDados(arquivo, inicio, fim):
 # Pos no intervalo [0:25000], refere-se aos bits do bitmap
 # Troca o valor do bitmap da posicao para seu complementar
 def switchBitmap(arqmem, pos):
+    global mapmem
     # Acessa uma posicao especifica do arquivo de memoria
-    mapmem = memory_map(arqmem)
+    #mapmem = memory_map(arqmem)
 
     val = pos/8
     rest = pos % 8
@@ -61,10 +64,15 @@ def switchBitmap(arqmem, pos):
     p^= 1 << rest
     mapmem[val+4000] = chr(p)
 
-    mapmem.close()
+   # mapmem.close()
+
+def startMM(arqmem):
+    global mapmem
+    mapmem = memory_map(arqmem)
 
 def getBitmap(arqmem, qtd):
-    mapmem = memory_map(arqmem)
+    global mapmem
+    #mapmem = memory_map(arqmem)
 
     for pos in xrange(qtd):
         val = pos/8
@@ -76,12 +84,15 @@ def getBitmap(arqmem, qtd):
         p &= 1 << rest
 
         if not p:
-            mapmem.close()
             return pos
 
+    return False
+
+def endMM():
+    global mapmem
     mapmem.close()
     
-    return False
+    
     
     
 
@@ -109,13 +120,14 @@ def leIntBin(arqmem, pos):
     return int(data[0])
 
 def escreveIntervalo(arqmem, ini, fim, conteudo):
+    global mapmem
     # Acessa uma posicao especifica do arquivo de memoria
-    mapmem = memory_map(arqmem)
+    #mapmem = memory_map(arqmem)
 
     #print len(conteudo), fim-ini
     mapmem[ini:ini+len(conteudo)] = conteudo
 
-    mapmem.close()
+    #mapmem.close()
                     
 
 

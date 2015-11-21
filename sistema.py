@@ -341,30 +341,33 @@ class SistemaArquivos:
 
     #...................................................................
     def copiaArquivo(self, origem, destino):
-        with open(origem, "r") as arquivo:
-            arquivo.seek(0, 2)
-            tamanho = arquivo.tell()
-            qtd = (tamanho / 3996) + 1
+        arquivo = open(origem, "r")
+        
+        arquivo.seek(0, 2)
+        tamanho = arquivo.tell()
+        
+        arquivo.seek(0)
+        buf = arquivo.read(tamanho)
+        arquivo.close()
+        qtd = (tamanho / 3996) + 1
 
-            bls = [destino]
-            for i in xrange(qtd-1):
-                novo = self.FirstFit()
-                if novo:
-                    bls.append(novo)
-                    switchBitmap(self.nome, novo)
-                else:
-                    print "Nao foi possivel copiar o arquivo"
-                    for j in xrange(len(bls)):
-                        switchBitmap(self.nome, bls[j])
-                    return
-            arquivo.seek(0)
-            buf = arquivo.read(tamanho)
-
-            i = 0
-            for i in xrange(qtd - 1):
-                self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
+        bls = [destino]
+        for i in xrange(qtd-1):
+            novo = self.FirstFit()
+            if novo:
+                bls.append(novo)
+                switchBitmap(self.nome, novo)
+            else:
+                print "Nao foi possivel copiar o arquivo"
+                for j in xrange(len(bls)):
+                    switchBitmap(self.nome, bls[j])
+                return
             
-            self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
+
+        for i in xrange(qtd - 1):
+            self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
+            
+        self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
 
 
             

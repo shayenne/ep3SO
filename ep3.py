@@ -65,7 +65,12 @@ if __name__ == "__main__":
 
         elif cmd[0] == "rmdir" and montado:
             print "Apaga diretorio, se nao vazio, avisa o que apagou"
+            try:
+                nome = cmd[1]
 
+                fileSystem.removeDiretorio(nome)
+            except IndexError:
+                print "Digite o nome completo do diretorio"
 
         elif cmd[0] == "cat" and montado:
             #print "Mostra conteudo de arquivo"

@@ -18,6 +18,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[portuguese]{babel}
 \usepackage{ragged2e}
+\usepackage{multicol}
 \usepackage{url}
 \mode<presentation> {
 
@@ -131,9 +132,6 @@ Sistemas Operacionais
 \end{itemize}
 \end{frame}
 
-
-
-
 %------------------------------------------------
 \section{Visão Geral} 
 %------------------------------------------------
@@ -146,10 +144,10 @@ Visão Geral
 \end{frame}
 
 %------------------------------------------------
-\subsection{Partição do Sistema}
+\subsection{Estrutura da Partição}
 %------------------------------------------------
 \begin{frame}
-\frametitle{Partição do Sistema}
+\frametitle{Estrutura da Partição}
 \begin{figure}
 \centering
 \includegraphics[scale=0.35]{particao2png.png}
@@ -212,42 +210,73 @@ Visão Geral
 \justifying
 \end{frame}
 
+%------------------------------------------------
+\subsection{Atributos}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Atributos}
+\begin{multicols}{2}
+
+\begin{itemize}
+\item Nome (12 bytes)  
+\item Ponteiro (2 bytes)
+\item Data: 
+	\begin{itemize}
+	\item Criação (16 bytes)
+	\item Modificação (16 bytes)
+	\item Acesso (16 bytes)
+	\end{itemize}
+\item Tamanho (9 bytes)
+\end{itemize}
+
+\begin{figure}
+	\includegraphics[scale=0.35, right]{estruturadirpng.png}
+\end{figure}
+\justifying
+\end{multicols}
+
+\begin{center}
+[Total de 71 bytes]
+\end{center}
+
+\end{frame}
 
 
 %------------------------------------------------
-\section{Interação com usuário}
+\section{Interação com o simulador}
 %------------------------------------------------
 \begin{frame}
 \begin{LARGE}
 \begin{center}
-Interação com usuário
+Interação com o simulador
 \end{center}
 \end{LARGE}
 \end{frame}
 
 %------------------------------------------------
-\begin{frame}
-\frametitle{Interação com usuário}
-5 comandos: carrega, espaço, substitui, executa e sai
-\begin{itemize}
-\item carrega [trace] 
+%------------------------------------------------
 
-  Cria lista para cada processo contendo os campos: 
-  
-  t0, nome, tf, espaço(byte), p1 t1, ... , pn tn
- 
+\begin{frame}
+\frametitle{Interação o simulador}
+
+
+\begin{itemize}
+\item mount arquivo 
+
 \item espaço ou substitui
 
-  Define variáveis de inicialização do gerenciador de espaço livre e algoritmo de substituição de páginas
 \end{itemize}
 \end{frame}
 
 
 %------------------------------------------------
+%------------------------------------------------
+
 \begin{frame}
 
 \begin{itemize}
-\frametitle{Interação com usuário}
+\frametitle{Interação o simulador}
 \item executa [intervalo]
 
   Cria listas de espaço livre e os arquivos ep2.mem e ep2.vir preenchidos com '-1'
@@ -264,246 +293,6 @@ Interação com usuário
 
 
 %------------------------------------------------
-\section{Gerenciador de Espaço Livre} 
-%------------------------------------------------
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\begin{Large}
-\begin{center}
-Gerenciamento de Espaço Livre
-\end{center}
-\end{Large}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Gerenciamento de Espaço Livre}
-\begin{itemize}
-
-\item Páginas como unidade de alocação (16 bytes)  
-
-\item Recebem a lista (virtual) e o espaço ocupado pelo processo em páginas
-
-\item Retornam a base (em página) ocupada pelo processo na lista
-
-\item Padrão: First Fit para encontrar espaço na memória física
-
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-\subsection{First Fit}
-%------------------------------------------------
-\begin{frame}
-\frametitle{First Fit}
-\begin{itemize}
-
-\item Busca sempre do início da lista
-
-\item Primeiro espaço livre encontrado
-\end{itemize}
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\subsection{Quick Fit}
-%------------------------------------------------
-\begin{frame}
-\frametitle{Quick Fit}
-\begin{itemize}
-
-\item Possui uma lista para os tamanhos: 1, 2, 4, 8 e 16 (páginas)
-
-\item "Ajusta" de acordo com o tamanho ocupado pelo processo  
-
-\end{itemize}
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Quick Fit}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.6]{imagem4.png}
-\end{figure}
-
-\begin{itemize}
-
-\item Verifica se o tamanho é menor ou igual a sua metade
-
-\item Caso o tamanho do processo não seja dos listados acima, o First Fit é acionado
-
-\item Remoção: checa o intervalo do espaço livre para atualização das listas
-
-\end{itemize}
-
-\justifying
-\end{frame}
-
-
-
-%------------------------------------------------
-\section{Substituição de Página}
-%------------------------------------------------
-\begin{frame}
-\begin{LARGE}
-\begin{center}
-Substituição de Página
-\end{center}
-\end{LARGE}
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{MMU}
-\begin{itemize}
-
-\item Base dos processos obtidos a partir de um dicionário: 
-
-[ pid ][ base ][ páginas ]
-
-\item Mapa MMU: 
- 
-[ bit presente / ausente ][ page frame ][ bit R ][ contador ]
-
-\item (Base + endereço local) do processo --- mapeamento --- endereço físico
-
-\end{itemize}
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{MMU}
-Como funciona?
-\begin{enumerate}
-
-\item Verifica local da sua base (Dicionário)
-
-\item Verifica se página solicitada (base + local) possui bit presente = 1
-
-\item Se sim: mapeia para o endereço físico
-
-\item Se não:  checa se a memória física possui espaço para a página (First Fit)
-
-\item Se sim: copia a página para memória física
-
-\item Se não: Substituição de página
-
-\end{enumerate}
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{MMU}
-\begin{itemize}
-\item Função que reseta o bit R do mapa a cada k segundos [Lock prioritário]
-
-\item Bit M desconsiderado
-\end{itemize}
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\subsection{NRUP} 
-%------------------------------------------------
-\begin{frame}
-\frametitle{Not Recently Used Page}
-
-\begin{center}
-[ pid ][ frame ][ bit R ][ contador ]
-\end{center}
-
-\begin{itemize}
-
-\item Dentre as páginas presentes na memória física, checa qual deles possui R = 0
-
-\item Caso todos os bits R’s = 1, espera resetar os bits R’s
-\end{itemize}
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\subsection{FIFO} 
-%------------------------------------------------
-\begin{frame}
-\frametitle{First-In First-Out}
-
-\begin{center}
-[ pid ][ frame ][ bit R ][ contador ]
-\end{center}
-
-\begin{itemize}
-\item Coloca na fila as páginas dos processos que foram ocupando a memória física
-
-\item A página mais ‘velha’ é retirada
-\end{itemize}
-\justifying
-
-\end{frame}
-
-%------------------------------------------------
-\subsection{Second Chance} 
-%------------------------------------------------
-\begin{frame}
-\frametitle{Second Chance}
-
-\begin{center}
-[ pid ][ frame ][ bit R ][ contador ]
-\end{center}
-
-\begin{itemize}
-\item Coloca na fila as páginas dos processos que foram ocupando a memória física
-
-\item Verifica se a página a ser retirada possui bit R = 0
-
-se sim: a página é retirada
-
-se não: bit R é resetado e o processo é colocado no final da fila.
-\end{itemize}
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Second Chance}
-Obs:
-\begin{itemize}
-\item Os bits R’s das páginas que estão na fila podem ser resetados
-
-\item Caso uma página tenha bit R = 0 e seja referenciada por algum processo, esse bit R permanecerá com bit R = 0
-\end{itemize}
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\subsection{LRUP}
-%------------------------------------------------
-\begin{frame}
-\frametitle{Least Recently Used Page}
-
-\begin{center}
-[ pid ][ frame ][ bit R ][ contador ]
-\end{center}
-
-\begin{itemize}
-\item Utiliza o contador e o bit R como referência
-
-\item A cada pulso de "clock" soma ao contador o valor de R
-\end{itemize}
-\justifying
-\end{frame}
-
-%------------------------------------------------
 \section{Resultados} 
 %------------------------------------------------
 \begin{frame}
@@ -514,9 +303,15 @@ Resultados
 \end{LARGE}
 \end{frame}
 
+
+
+
+%------------------------------------------------
+\subsection{Sistema de arquivo vazio}
+%------------------------------------------------
 %------------------------------------------------
 \begin{frame}
-\frametitle{Gerenciamento de Espaço Livre} 
+\frametitle{Cópia de um arquivo de 1MB no '/'} 
 
 \justifying
 \end{frame}
@@ -524,17 +319,300 @@ Resultados
 
 %------------------------------------------------
 \begin{frame}
-\frametitle{Substituição de Páginas} 
+\frametitle{Cópia de um arquivo de 10MB no '/'} 
 
-Exemplo de um modelo ótimo
+\justifying
+\end{frame}
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.4]{ressubs1.png}
-\end{figure}
 
-Total de 16 page fault
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 30MB no '/'} 
 
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Sem nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Com nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+
+
+%------------------------------------------------
+\subsection{Sistema de arquivos com 10MB ocupados}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Sem nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Com nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+
+%------------------------------------------------
+\subsection{Sistema de arquivos com 50MB ocupados}
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+
+
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 50MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Sem nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Com nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\section{Experimentos}
+%------------------------------------------------
+\begin{frame}
+\begin{LARGE}
+\begin{center}
+Experimentos
+\end{center}
+\end{LARGE}
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia de um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 1MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 10MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa de um diretório pai com 30 níveis de hierarquia} 
+VAZIA
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa de um diretório pai com 30 níveis de hierarquia} 
+CENTENAS DE ARQUIVOS
+\justifying
+\end{frame}
+
+
+
+
+%------------------------------------------------
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 50MB no '/'} 
+
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção um arquivo de 30MB no '/'} 
+
+\justifying
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Sem nenhum diretório ou arquivo regular
+\justifying
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Remoção completa com 30 níveis de hierarquia} 
+Com nenhum diretório ou arquivo regular
 \justifying
 \end{frame}
 

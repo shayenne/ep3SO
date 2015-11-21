@@ -4,7 +4,7 @@ import time
 from termcolor import colored, cprint
 
 
-ent = 64
+ent = 70
 
 class SistemaArquivos:
 
@@ -309,7 +309,7 @@ class SistemaArquivos:
         entrada = self.devolveEntrada(blocoPai, caminho[(len(caminho)-1)])
 
         # Posicao da data de acesso no conteudo do diretorio
-        conteudo = conteudo[:62+entrada]+struct.pack("h", tamanho)
+        conteudo = conteudo[:62+entrada]+struct.pack("q", tamanho)
         
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 
@@ -403,7 +403,7 @@ class SistemaArquivos:
 # MAIN
 #............................
 if __name__=="__main__":
-    teste = SistemaArquivos("primeiro")
+    #teste = SistemaArquivos("primeiro")
     # Raiz
     #teste.escreveBloco(2, struct.pack("h", 4)+struct.pack("h", 2)+"casa\0\0\0\0\0\0\0\0"+struct.pack("h", 5)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000040"+"comida\0\0\0\0\0\0"+struct.pack("h", 6)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000080")
 
@@ -442,15 +442,15 @@ if __name__=="__main__":
     #teste.criaDiretorio("/roupa")
     #teste.leArquivo(teste.devolveBloco("/"))
     #teste.criaArquivo("/coisa")
-    print "Criei o diretorio /casa"
-    teste.criaDiretorio("/casa")
-    teste.leArquivo(teste.devolveBloco("/"))
+    #print "Criei o diretorio /casa"
+    #teste.criaDiretorio("/casa")
+    #teste.leArquivo(teste.devolveBloco("/"))
     #print "Criei o diretorio movo"
     #teste.criaDiretorio("/movo")
     #teste.leArquivo(teste.devolveBloco("/"))
 
-    print "Criei arquivo /casa/cachorro"
-    teste.criaArquivo("/casa/cachorro")
+    #print "Criei arquivo /casa/cachorro"
+    #teste.criaArquivo("/casa/cachorro")
     #print "Criei diretorio /casa/animal"
     #teste.criaDiretorio("/casa/animal")
     #teste.criaArquivo("/casa/animal/bicho")
@@ -462,6 +462,8 @@ if __name__=="__main__":
     #teste.leArquivo(2)
     #teste.leArquivo(teste.devolveBloco("/gato"))
     #teste.leArquivo(teste.devolveBloco("/"))
-    teste.criaArquivo("/copia")
-    teste.copiaArquivo("gato", teste.devolveBloco("/copia"))
-    teste.leArquivo(teste.devolveBloco("/copia"))
+    #teste.criaArquivo("/copia")
+    #teste.copiaArquivo("gato", teste.devolveBloco("/copia"))
+    #teste.leArquivo(teste.devolveBloco("/copia"))
+    escreveIntBin("terceiro", 2, 2)
+    

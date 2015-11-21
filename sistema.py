@@ -43,7 +43,7 @@ class SistemaArquivos:
         print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
 
         # Demora para criar um arquivo de 100MB
-        makeEmptyBin(fileSystem, 100000000)
+        makeEmptyBin(fileSystem, 1000000)
 
         escreveIntBin(fileSystem, 0, self.bitmap)
         escreveIntBin(fileSystem, 2, self.raiz)
@@ -67,18 +67,19 @@ class SistemaArquivos:
         self.criaArquivo(nome)
         
         ant = self.devolveBloco(nome)
-        for i in xrange(3):
+        for i in xrange(4):
             novo = self.FirstFit()
+            print "FirstFit devolveu", novo, "em criaDiretorio"
             if novo:
                 self.escreveBloco(ant, struct.pack("h", novo)+struct.pack("h", 0))
-                switchBitmap(self.nome, ant)
+                switchBitmap(self.nome, novo)
             else:
                 print "Acabou o espaco em criaDiretorio"
                 break
 
             ant = novo
         self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
-        switchBitmap(self.nome, ant)
+        
 
     #..................................................................
     def devolveBloco(self, nome):
@@ -202,6 +203,7 @@ class SistemaArquivos:
                     bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
 
                     p, c, ctd = self.leBloco(bl[0])
+                    #print "O contador e", c
                     if c == -1:
                         #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
                         tam  = struct.unpack("h", conteudo[62+i*ent:64+i*ent])[0] 
@@ -244,9 +246,7 @@ class SistemaArquivos:
     #......................................................
     def FirstFit(self):
         # Atualizar para 25000 que eh a qtd de blocos disponiveis
-        for i in xrange(25000):
-            if not getBitmap(self.nome, i):
-                return i
+        return getBitmap(self.nome, 250)
         print "ACABOU O ESPACO"
         return False
 
@@ -292,6 +292,27 @@ class SistemaArquivos:
         
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 
+
+    #.............................................
+    def atualizaTamanho(self, arquivo, tamanho):
+        caminho = arquivo.split("/")
+
+        if len(caminho) == 2:
+            pai = "/"
+        else:
+            pai = "/".join(caminho[:(len(caminho)-1)])
+
+        blocoPai = self.devolveBloco(pai)
+
+        prox, cont, conteudo = self.leBloco(blocoPai)
+        
+        entrada = self.devolveEntrada(blocoPai, caminho[(len(caminho)-1)])
+
+        # Posicao da data de acesso no conteudo do diretorio
+        conteudo = conteudo[0:62]+struct.pack("h", tamanho)
+        
+        self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
+
     #..................................................
     def criaArquivo(self, arquivo):
         global ent
@@ -319,6 +340,7 @@ class SistemaArquivos:
             prox, cont, conteudo = self.leBloco(ant)
 
         espaco = self.FirstFit()
+        print "FirstFit devolveu", espaco, "em criaArquivo"
         if espaco:
             # Marco o espaco como ocupado
             switchBitmap(self.nome, espaco)
@@ -341,6 +363,8 @@ class SistemaArquivos:
 
     #...................................................................
     def copiaArquivo(self, origem, destino):
+        self.criaArquivo(destino)
+
         arquivo = open(origem, "r")
         
         arquivo.seek(0, 2)
@@ -351,9 +375,10 @@ class SistemaArquivos:
         arquivo.close()
         qtd = (tamanho / 3996) + 1
 
-        bls = [destino]
+        bls = [self.devolveBloco(destino)]
         for i in xrange(qtd-1):
             novo = self.FirstFit()
+            print "FirstFit devolveu ", novo, "em copiaArquivo"
             if novo:
                 bls.append(novo)
                 switchBitmap(self.nome, novo)
@@ -368,6 +393,8 @@ class SistemaArquivos:
             self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
             
         self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
+
+        self.atualizaTamanho(destino, tamanho)
 
 
             

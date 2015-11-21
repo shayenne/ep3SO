@@ -15,6 +15,7 @@ def escreveDados(arquivo, dados, posicao):
     with open(arquivo, 'ab') as f:
         f.seek(posicao)
         f.write(dados)
+        f.close()
 
 """        
 def copiaArquivo(origem, destino, posicao):
@@ -42,6 +43,7 @@ def leDados(arquivo, inicio, fim):
     with open(arquivo, 'rb') as f:
         f.seek(inicio)
         data = f.read(fim-inicio)
+        f.close()
     return data
 
 # Pos no intervalo [0:25000], refere-se aos bits do bitmap
@@ -61,18 +63,25 @@ def switchBitmap(arqmem, pos):
 
     mapmem.close()
 
-def getBitmap(arqmem, pos):
+def getBitmap(arqmem, qtd):
     mapmem = memory_map(arqmem)
-    val = pos/8
-    rest = pos % 8
 
-    p = ord(mapmem[val+4000])
+    for pos in xrange(qtd):
+        val = pos/8
+        rest = pos % 8
 
-    # Seta o bit da posicao "pos" para o valor "bit" 
-    p&= 1 << rest
+        p = ord(mapmem[val+4000])    
+
+        # Seta o bit da posicao "pos" para o valor "bit" 
+        p &= 1 << rest
+
+        if not p:
+            mapmem.close()
+            return pos
+
     mapmem.close()
     
-    return p
+    return False
     
     
 

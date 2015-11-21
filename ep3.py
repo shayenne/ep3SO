@@ -42,8 +42,8 @@ if __name__ == "__main__":
                     f = open(origem, "r")
                     f.close()
 
-                    fileSystem.criaArquivo(destino)
-                    fileSystem.copiaArquivo(origem, fileSystem.devolveBloco(destino))
+                    #fileSystem.criaArquivo(destino)
+                    fileSystem.copiaArquivo(origem, destino)
                     #arquivo = Arquivo(destino)
                     #arquivo.cp(origem)
 

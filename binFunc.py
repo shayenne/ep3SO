@@ -80,11 +80,29 @@ def getBitmap(arqmem, qtd):
 
         p = ord(mapmem[val+4000])    
 
-        # Seta o bit da posicao "pos" para o valor "bit" 
+        # Verifica o bit da posicao pos
         p &= 1 << rest
 
         if not p:
             return pos
+
+    return False
+
+def usedBitmap(arqmem, pos):
+    global mapmem
+    #mapmem = memory_map(arqmem)
+
+
+    val = pos/8
+    rest = pos % 8
+    
+    p = ord(mapmem[val+4000])    
+        
+    # Verifica o bit da posicao pos
+    p &= 1 << rest
+        
+    if p:
+        return True
 
     return False
 

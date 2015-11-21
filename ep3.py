@@ -132,6 +132,7 @@ if __name__ == "__main__":
 
         elif cmd[0] == "umount" and montado:
             print "Sistema de arquivos", fileSystem.nome, "desmontado."
+            fileSystem.FAT = [None for i in xrange(25000)]
             montado = False
             
 

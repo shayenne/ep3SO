@@ -12,7 +12,7 @@ class SistemaArquivos:
     raiz = None
     dirs = []
     bitmap = None
-    FAT = []
+    FAT = [None for i in xrange(25000)]
     tam = 4000
 
     #..................................................
@@ -20,6 +20,8 @@ class SistemaArquivos:
         # se o sistema de arquivos nao existe, criar um novo
         self.nome = nome
     
+        self.inicializaFAT()
+        #print self.FAT
         try:
             with open(self.nome, 'rb') as fileSystem:
                 print "Sistema existe"
@@ -49,8 +51,6 @@ class SistemaArquivos:
         escreveIntBin(fileSystem, 0, self.bitmap)
         escreveIntBin(fileSystem, 2, self.raiz)
         escreveIntBin(fileSystem, 4, self.dirs)
-
-        #self.escreveBloco(0, struct..)
         
         # Inicializa o diretorio raiz com 5 blocos
         startMM(self.nome)
@@ -65,11 +65,35 @@ class SistemaArquivos:
         self.escreveBloco(6, struct.pack("h", -1)+struct.pack("h", 0))
         endMM()
 
+    #..................................................................
+    def inicializaFAT(self):
+       
+        startMM(self.nome)
+        i = 2
+        while i < 25000:
+            if self.FAT[i] == None and usedBitmap(self.nome, i):
+                ant = i
+                prox, c, cont = self.leBloco(ant)
+                while prox != -1 and prox != 0:
+                    self.FAT[ant] = prox
+                    print "Mudei a entrada", ant, " da FAT para", prox
+                    ant = prox
+                    prox, c, cont = self.leBloco(ant)
+                    print "Esse e o proximo", prox
+                if prox != 0:
+                    self.FAT[ant] = prox
+                    print "Mudei a entrada", ant, " da FAT para", prox
+            i += 1
+
+        endMM()
+
     #................................................................
     def criaDiretorio(self, nome):
         self.criaArquivo(nome)
         
         ant = self.devolveBloco(nome)
+        
+        self.FAT[ant] = None
         # Diminui a qtd de bitmaps
         startMM(self.nome)
         for i in xrange(4):
@@ -87,6 +111,7 @@ class SistemaArquivos:
         self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
         # Finaliza o bitmap
         endMM()
+        self.inicializaFAT()
 
     #..................................................................
     def devolveBloco(self, nome):
@@ -95,7 +120,7 @@ class SistemaArquivos:
         # Verifica se o nome e a raiz
         if nome == "/":
             return self.raiz
-
+        
         # Faz uma busca a partir da raiz
         else:
             
@@ -373,7 +398,9 @@ class SistemaArquivos:
 
             # Escrevo o conteudo do bloco espaco
             self.escreveBloco(espaco, struct.pack("h", -1)+struct.pack("h", -1))
+            self.FAT[espaco] = -1
             endMM()
+            self.inicializaFAT()
             return True
         else:
             print "ACABOU O ESPACO em criaArquivo"
@@ -414,14 +441,17 @@ class SistemaArquivos:
     
         for i in xrange(qtd - 1):
             self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
+            self.FAT[bls[i]] = bls[i+1]
             
         self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
+        self.FAT[bls[qtd-1]] = -1
 
         # Finaliza o bitmap usado no FirstFit
         endMM()
 
         print "Estou mandando escrever um tamanho de ", tamanho
         self.atualizaTamanho(destino, tamanho)
+        self.inicializaFAT()
 
 
     #..................................................
@@ -487,20 +517,36 @@ class SistemaArquivos:
             self.escreveBloco(ant, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
             endMM()
             self.leArquivo(ant)
-            # Nao precisaria disso se tivesse FAT
             
+            # Usando a FAT
             startMM(self.nome)
             print "Bloco inicial", bl
-            prox, c, ct = self.leBloco(bl)
-            print "Proximo", prox
-            time.sleep(5)
-            while prox != -1:
+            pnt = bl
+            print "Esse lugar ", pnt, "aponta para", self.FAT[pnt]
+            while self.FAT[pnt] != -1:
+                if usedBitmap(self.nome, bl):
+                    switchBitmap(self.nome, bl)
+                bl = pnt
+                pnt = self.FAT[pnt]
+                self.FAT[bl] = None
+                print "Setei a FAT", bl, "para", self.FAT[bl], "prox eh", pnt
+            if usedBitmap(self.nome, bl):
                 switchBitmap(self.nome, bl)
-                bl = prox
-                print "Esses sao os proximos", prox
-                prox, c, ct = self.leBloco(bl)
+            self.FAT[bl] = None
+            print "Setei a FAT", bl, "para", self.FAT[bl]
+            
+            # Nao precisaria disso se tivesse FAT
+            #prox, c, ct = self.leBloco(bl)
+            
+            #print "Proximo", prox
+            
+            #while prox != -1:
+            #    switchBitmap(self.nome, bl)
+            #    bl = prox
+            #    print "Esses sao os proximos", prox
+            #    prox, c, ct = self.leBloco(bl)
 
-            switchBitmap(self.nome, bl)
+            #switchBitmap(self.nome, bl)
 
             
         else:

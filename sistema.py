@@ -1,8 +1,10 @@
 from binFunc import *
 from datetime import datetime
 import time
+from termcolor import colored, cprint
 
-ent = 71
+
+ent = 64
 
 class SistemaArquivos:
 
@@ -13,6 +15,7 @@ class SistemaArquivos:
     FAT = []
     tam = 4000
 
+    #..................................................
     def __init__(self, nome):
         # se o sistema de arquivos nao existe, criar um novo
         self.nome = nome
@@ -28,6 +31,8 @@ class SistemaArquivos:
         except IOError:
             self.criaSistemaArquivos()
 
+
+    #......................................................
     def criaSistemaArquivos(self):
         fileSystem = self.nome
         # Endereco de blocos
@@ -38,17 +43,18 @@ class SistemaArquivos:
         print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
 
         # Demora para criar um arquivo de 100MB
-        makeEmptyBin(fileSystem, 100000)
+        makeEmptyBin(fileSystem, 100000000)
 
         escreveIntBin(fileSystem, 0, self.bitmap)
         escreveIntBin(fileSystem, 2, self.raiz)
         escreveIntBin(fileSystem, 4, self.dirs)
+
+        #self.escreveBloco(0, struct..)
         
         for i in xrange(7):
             switchBitmap(fileSystem, i)
 
         # Inicializa o diretorio raiz com 5 blocos
-        
         self.escreveBloco(2, struct.pack("h", 3)+struct.pack("h", 0))
         self.escreveBloco(3, struct.pack("h", 4)+struct.pack("h", 0))
         self.escreveBloco(4, struct.pack("h", 5)+struct.pack("h", 0))
@@ -56,6 +62,7 @@ class SistemaArquivos:
         self.escreveBloco(6, struct.pack("h", -1)+struct.pack("h", 0))
 
 
+    #................................................................
     def criaDiretorio(self, nome):
         self.criaArquivo(nome)
         
@@ -64,13 +71,16 @@ class SistemaArquivos:
             novo = self.FirstFit()
             if novo:
                 self.escreveBloco(ant, struct.pack("h", novo)+struct.pack("h", 0))
+                switchBitmap(self.nome, ant)
             else:
                 print "Acabou o espaco em criaDiretorio"
                 break
 
             ant = novo
         self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
+        switchBitmap(self.nome, ant)
 
+    #..................................................................
     def devolveBloco(self, nome):
         # Tamanho da entrada em bytes
         global ent
@@ -99,6 +109,7 @@ class SistemaArquivos:
             return False 
 
     
+    #..................................................................
     def devolveEntrada(self, bloco, nome):
         global ent
         prox, cont, conteudo = self.leBloco(bloco)
@@ -110,7 +121,7 @@ class SistemaArquivos:
 
         return False
 
-
+    #................................................................
     def find(self, diretorio, arquivo):
         global ent
         end = self.devolveBloco(diretorio)
@@ -135,7 +146,7 @@ class SistemaArquivos:
                     self.find(diretorio+"/"+nome, arquivo)
 
 
-
+    #.....................................................................
     def ajustaNome(self, a):
         b = []
         for i in xrange(len(a)):
@@ -145,7 +156,7 @@ class SistemaArquivos:
         b = "".join(b)
         return b
 
-
+    #......................................................................
     def esticaNome(self, a):
         b = list(a)
         while len(b) < 12:
@@ -155,7 +166,7 @@ class SistemaArquivos:
         return b
         
 
-
+    #......................................................................
     def getRaiz(self):
         return self.raiz
 
@@ -183,20 +194,21 @@ class SistemaArquivos:
         global ent
         prox, cont, conteudo = self.leBloco(endereco)
 
+        
         while prox != -1:
             if cont != -1:# Eh um diretorio
                 for i in xrange(cont):
                     nome = self.ajustaNome(conteudo[0+i*ent:12+i*ent])
-                    tam  = int(str(conteudo[62+i*ent:71+i*ent]))
-                    mod  = conteudo[30+i*ent:46+i*ent]
-
                     bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
 
                     p, c, ctd = self.leBloco(bl[0])
                     if c == -1:
+                        #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
+                        tam  = struct.unpack("h", conteudo[62+i*ent:64+i*ent])[0] 
+                        mod  = conteudo[30+i*ent:46+i*ent]
                         print nome, tam, mod
                     else:
-                        print "[{}]".format(nome)
+                        print colored(nome, 'blue')
             else:
                 print conteudo
 
@@ -206,14 +218,20 @@ class SistemaArquivos:
         if cont != -1: # Eh um diretorio
             for i in xrange(cont):
                 nome = self.ajustaNome(conteudo[0+i*ent:12+i*ent])
-                tam  = conteudo[62+i*ent:71+i*ent]
-                mod  = conteudo[30+i*ent:46+i*ent]
-                    
-                print nome, tam, mod
+                bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
+                
+                p, c, ctd = self.leBloco(bl[0])
+                if c == -1:
+                    #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
+                    tam  = struct.unpack("h", conteudo[62+i*ent:64+i*ent])[0]
+                    mod  = conteudo[30+i*ent:46+i*ent]
+                    print nome, tam, mod
+                else:
+                    print "[{}]".format(nome)
         else:
             print conteudo
 
-
+    #.............................................................
     # OBS: Nunca recebe um conteudo maior que 4 kB
     # Recebe um conteudo e escreve no bloco apontado por endereco
     def escreveBloco(self, endereco, conteudo):
@@ -226,7 +244,7 @@ class SistemaArquivos:
     #......................................................
     def FirstFit(self):
         # Atualizar para 25000 que eh a qtd de blocos disponiveis
-        for i in xrange(25):
+        for i in xrange(25000):
             if not getBitmap(self.nome, i):
                 return i
         print "ACABOU O ESPACO"
@@ -238,11 +256,23 @@ class SistemaArquivos:
     #..........................................
     def getTimeNow(self):
         data = datetime.now()
-        now = str(data.year)+"-"+str(data.month)+"-"+str(data.day)+" "+str(data.hour)+":"+str(data.minute)
+        mes = data.month
+        if mes < 10:
+            mes = str("0"+str(mes))
+        dia = data.day
+        if dia < 10:
+            dia = str("0"+str(dia))
+        hora = data.hour
+        if hora < 10:
+            hora = str("0"+str(hora))
+        minuto = data.minute
+        if minuto < 10:
+            minuto = str("0"+str(minuto))
+        now = str(data.year)+"-"+str(mes)+"-"+str(dia)+" "+str(hora)+":"+str(minuto)
         return now
 
 
-
+    #.............................................
     def atualizaAcesso(self, arquivo):
         caminho = arquivo.split("/")
 
@@ -262,7 +292,7 @@ class SistemaArquivos:
         
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 
-
+    #..................................................
     def criaArquivo(self, arquivo):
         global ent
         caminho = arquivo.split("/")
@@ -284,7 +314,7 @@ class SistemaArquivos:
             return False
 
         ant = blocoPai
-        while prox != -1 and cont == 56:
+        while prox != -1 and cont == 62:
             ant = prox
             prox, cont, conteudo = self.leBloco(ant)
 
@@ -293,7 +323,7 @@ class SistemaArquivos:
             # Marco o espaco como ocupado
             switchBitmap(self.nome, espaco)
             # Adiciono entrada na pasta pai
-            entrada = self.esticaNome(caminho[len(caminho)-1])+struct.pack("h", espaco)+self.getTimeNow()+self.getTimeNow()+self.getTimeNow()+str("000000000")
+            entrada = self.esticaNome(caminho[len(caminho)-1])+struct.pack("h", espaco)+self.getTimeNow()+self.getTimeNow()+self.getTimeNow()+struct.pack("h", 0)
 
             conteudo = conteudo[:cont*ent]+entrada+conteudo[(cont+1)*ent:]
             cont += 1
@@ -307,6 +337,37 @@ class SistemaArquivos:
             print "ACABOU O ESPACO em criaArquivo"
             return False
 
+
+
+    #...................................................................
+    def copiaArquivo(self, origem, destino):
+        with open(origem, "r") as arquivo:
+            arquivo.seek(0, 2)
+            tamanho = arquivo.tell()
+            qtd = (tamanho / 3996) + 1
+
+            bls = [destino]
+            for i in xrange(qtd-1):
+                novo = self.FirstFit()
+                if novo:
+                    bls.append(novo)
+                    switchBitmap(self.nome, novo)
+                else:
+                    print "Nao foi possivel copiar o arquivo"
+                    for j in xrange(len(bls)):
+                        switchBitmap(self.nome, bls[j])
+                    return
+            arquivo.seek(0)
+            buf = arquivo.read(tamanho)
+
+            i = 0
+            for i in xrange(qtd - 1):
+                self.escreveBloco(bls[i], struct.pack("h", bls[i+1])+ struct.pack("h", -1)+buf[0+i*3996:(i+1)*3996])
+            
+            self.escreveBloco(bls[qtd-1], struct.pack("h", -1)+struct.pack("h", -1)+buf[(qtd-1)*3996:(qtd)*3996])
+
+
+            
 
 #............................
 # MAIN
@@ -347,12 +408,30 @@ if __name__=="__main__":
     #teste.leArquivo(teste.devolveBloco("/comida"))
     #teste.leArquivo(teste.devolveBloco("/comida/agua"))
 
-    teste.criaDiretorio("/roupa")
+    #print "Criei o diretorio roupa"
+    #teste.criaDiretorio("/roupa")
+    #teste.leArquivo(teste.devolveBloco("/"))
+    #teste.criaArquivo("/coisa")
+    print "Criei o diretorio /casa"
     teste.criaDiretorio("/casa")
-    teste.criaDiretorio("/movo")
+    teste.leArquivo(teste.devolveBloco("/"))
+    #print "Criei o diretorio movo"
+    #teste.criaDiretorio("/movo")
+    #teste.leArquivo(teste.devolveBloco("/"))
+
+    print "Criei arquivo /casa/cachorro"
     teste.criaArquivo("/casa/cachorro")
-    teste.criaDiretorio("/casa/animal")
-    teste.criaArquivo("/gato")
-    teste.leArquivo(2)
-    teste.leArquivo(teste.devolveBloco("/gato"))
-    teste.leArquivo(teste.devolveBloco("/casa"))
+    #print "Criei diretorio /casa/animal"
+    #teste.criaDiretorio("/casa/animal")
+    #teste.criaArquivo("/casa/animal/bicho")
+    #print "Conteudo de /casa/animal"
+    #teste.leArquivo(teste.devolveBloco("/casa/animal"))
+    #teste.leArquivo(teste.devolveBloco("/casa"))
+    #print "Criei arquivo /gato"
+    #teste.criaArquivo("/gato")
+    #teste.leArquivo(2)
+    #teste.leArquivo(teste.devolveBloco("/gato"))
+    #teste.leArquivo(teste.devolveBloco("/"))
+    teste.criaArquivo("/copia")
+    teste.copiaArquivo("gato", teste.devolveBloco("/copia"))
+    teste.leArquivo(teste.devolveBloco("/copia"))

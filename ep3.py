@@ -42,6 +42,8 @@ if __name__ == "__main__":
                     f = open(origem, "r")
                     f.close()
 
+                    fileSystem.criaArquivo(destino)
+                    fileSystem.copiaArquivo(origem, fileSystem.devolveBloco(destino))
                     #arquivo = Arquivo(destino)
                     #arquivo.cp(origem)
 
@@ -53,8 +55,13 @@ if __name__ == "__main__":
 
         elif cmd[0] == "mkdir" and montado:
             print "Cria diretorio"
-            pasta = Diretorio(fileSystem.getRaiz())
-            pasta.mkdir(cmd[1])
+            try:
+                nome = cmd[1]
+
+                fileSystem.criaDiretorio(nome)
+            except IndexError:
+                print "Digite o nome completo do diretorio"
+            
 
         elif cmd[0] == "rmdir" and montado:
             print "Apaga diretorio, se nao vazio, avisa o que apagou"
@@ -94,7 +101,13 @@ if __name__ == "__main__":
             print "Quero remover o arquivo"
 
         elif cmd[0] == "ls" and montado:
-            print "Listar nome, tamanho em bytes e ultima modificacao"
+            #print "Listar nome, tamanho em bytes e ultima modificacao"
+            try:
+                nome = cmd[1]
+
+                fileSystem.leArquivo(fileSystem.devolveBloco(nome))
+            except IndexError:
+                print "Digite o caminho completo do diretorio"
             
         elif cmd[0] == "find" and montado:
             #print "Quero buscar um arquivo a partir de um diretorio"

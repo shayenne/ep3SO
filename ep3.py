@@ -98,7 +98,12 @@ if __name__ == "__main__":
 
         elif cmd[0] == "rm" and montado:
             print "Quero remover o arquivo"
+            try:
+                nome = cmd[1]
 
+                fileSystem.removeArquivo(nome)
+            except IndexError:
+                print "Digite o caminho completo para o arquivo"
 
         elif cmd[0] == "ls" and montado:
             #print "Listar nome, tamanho em bytes e ultima modificacao"

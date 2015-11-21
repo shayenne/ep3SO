@@ -132,12 +132,13 @@ def escreveIntervalo(arqmem, ini, fim, conteudo):
 
 
 def leIntervalo(arqmem, ini, fim):
+    global mapmem
     # Acessa uma posicao especifica do arquivo de memoria
-    mapmem = memory_map(arqmem)
+    #mapmem = memory_map(arqmem)
     data = mapmem[ini : fim]
         
     #print mapmem[pos]
-    mapmem.close()
+    #mapmem.close()
     return data
 
 if __name__=="__main__":

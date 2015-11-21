@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
             
         elif cmd[0] == "cp" and montado:
-            print "Quero copiar"
+            #print "Quero copiar"
 
             try:
                 origem  = cmd[1]
@@ -54,7 +54,7 @@ if __name__ == "__main__":
                 print "Voce precisa digitar origem e destino"
 
         elif cmd[0] == "mkdir" and montado:
-            print "Cria diretorio"
+            #print "Cria diretorio"
             try:
                 nome = cmd[1]
 
@@ -66,8 +66,9 @@ if __name__ == "__main__":
         elif cmd[0] == "rmdir" and montado:
             print "Apaga diretorio, se nao vazio, avisa o que apagou"
 
+
         elif cmd[0] == "cat" and montado:
-            print "Mostra conteudo de arquivo"
+            #print "Mostra conteudo de arquivo"
             try:
                 nome = cmd[1]
 
@@ -76,6 +77,7 @@ if __name__ == "__main__":
 
             except IndexError:
                 print "Digite o caminho completo do arquivo"
+
 
         elif cmd[0] == "touch" and montado:
             #print "Atualiza ultimo acesso ou cria novo arquivo"
@@ -87,18 +89,16 @@ if __name__ == "__main__":
                     print "Ja existia, atualizei"
                     fileSystem.atualizaAcesso(nome)
                 else:
-
                     print "Tive que criar pq nao existia"
                     fileSystem.criaArquivo(nome)
-                        
-                        
-                    
                     
             except IndexError:
                 print "Voce precisa escrever o nome completo do arquivo"
 
+
         elif cmd[0] == "rm" and montado:
             print "Quero remover o arquivo"
+
 
         elif cmd[0] == "ls" and montado:
             #print "Listar nome, tamanho em bytes e ultima modificacao"
@@ -109,6 +109,7 @@ if __name__ == "__main__":
             except IndexError:
                 print "Digite o caminho completo do diretorio"
             
+
         elif cmd[0] == "find" and montado:
             #print "Quero buscar um arquivo a partir de um diretorio"
             try:
@@ -119,13 +120,16 @@ if __name__ == "__main__":
             except IndexError:
                 print "Voce precisa digitar diretorio e arquivo"
 
+
         elif cmd[0] == "df" and montado:
             print "Imprime informacoes"
 
+
         elif cmd[0] == "umount" and montado:
-            print "Devo desmontar o sistema de arquivos"
+            print "Sistema de arquivos", fileSystem.nome, "desmontado."
             montado = False
             
+
         cmd = raw_input("[ep3]: ").split()
 
 

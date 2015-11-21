@@ -210,7 +210,7 @@ class SistemaArquivos:
                         mod  = conteudo[30+i*ent:46+i*ent]
                         print nome, tam, mod
                     else:
-                        print colored(nome, 'blue')
+                        print colored(nome, 'blue', attrs=['bold'])
             else:
                 print conteudo
 
@@ -288,7 +288,7 @@ class SistemaArquivos:
         entrada = self.devolveEntrada(blocoPai, caminho[(len(caminho)-1)])
 
         # Posicao da data de acesso no conteudo do diretorio
-        conteudo = conteudo[:46]+self.getTimeNow()+conteudo[62:]
+        conteudo = conteudo[:46+entrada]+self.getTimeNow()+conteudo[62+entrada:]
         
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 
@@ -309,7 +309,7 @@ class SistemaArquivos:
         entrada = self.devolveEntrada(blocoPai, caminho[(len(caminho)-1)])
 
         # Posicao da data de acesso no conteudo do diretorio
-        conteudo = conteudo[0:62]+struct.pack("h", tamanho)
+        conteudo = conteudo[:62+entrada]+struct.pack("h", tamanho)
         
         self.escreveBloco(blocoPai, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
 

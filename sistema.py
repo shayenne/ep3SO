@@ -19,14 +19,14 @@ class SistemaArquivos:
 
     #..................................................
     def __init__(self, nome):
-        # se o sistema de arquivos nao existe, criar um novo
+   
         self.nome = nome
     
         self.inicializaFAT()
-        #print self.FAT
+   
         try:
             with open(self.nome, 'rb') as fileSystem:
-                #print "Sistema existe"
+   
                 self.bitmap = 1
                 self.raiz   = 2
                 self.dirs   = 3
@@ -34,8 +34,6 @@ class SistemaArquivos:
                 escreveIntBin(self.nome, 2, self.raiz)
                 escreveIntBin(self.nome, 4, self.dirs)
 
-                #print self.bitmap, self.raiz, self.dirs
-                
         except IOError:
             self.criaSistemaArquivos()
 
@@ -47,8 +45,6 @@ class SistemaArquivos:
         self.bitmap = 1
         self.raiz = 2
         self.dirs = 3
-
-       # print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
 
         # Demora para criar um arquivo de 100MB
         makeEmptyBin(fileSystem, 100000000)
@@ -85,13 +81,12 @@ class SistemaArquivos:
                     self.ndir += 1
                 while prox != -1 and prox != 0:
                     self.FAT[ant] = prox
-                    #print "Mudei a entrada", ant, " da FAT para", prox
                     ant = prox
                     prox, c, cont = self.leBloco(ant)
-                    #print "Esse e o proximo", prox
+        
                 if prox != 0:
                     self.FAT[ant] = prox
-                    #print "Mudei a entrada", ant, " da FAT para", prox
+        
             i += 1
 
         endMM()
@@ -107,7 +102,7 @@ class SistemaArquivos:
         startMM(self.nome)
         for i in xrange(4):
             novo = self.FirstFit()
-            #print "FirstFit devolveu", novo, "em criaDiretorio"
+           
             if novo:
                 self.escreveBloco(ant, struct.pack("h", novo)+struct.pack("h", 0))
                 switchBitmap(self.nome, novo)
@@ -250,9 +245,8 @@ class SistemaArquivos:
                     bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
 
                     p, c, ctd = self.leBloco(bl[0])
-                    #print "O contador e", c
+
                     if c == -1:
-                        #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
                         tam  = struct.unpack("q", conteudo[62+i*ent:70+i*ent])[0] 
                         mod  = conteudo[30+i*ent:46+i*ent]
                         print nome, tam, mod
@@ -271,7 +265,6 @@ class SistemaArquivos:
                 
                 p, c, ctd = self.leBloco(bl[0])
                 if c == -1:
-                    #tam  = int(str(conteudo[62+i*ent:71+i*ent]))
                     tam  = struct.unpack("h", conteudo[62+i*ent:64+i*ent])[0]
                     mod  = conteudo[30+i*ent:46+i*ent]
                     print nome, tam, mod
@@ -294,7 +287,6 @@ class SistemaArquivos:
     # Retorna o primeiro endereco de bloco vazio encontrado
     #......................................................
     def FirstFit(self):
-        # Atualizar para 25000 que eh a qtd de blocos disponiveis
         x = getBitmap(self.nome, 25000)
         while x >= 0 and x <= 6:
             switchBitmap(self.nome, x)
@@ -398,11 +390,10 @@ class SistemaArquivos:
         
         espaco = self.FirstFit()
         endMM()
-        #print "FirstFit devolveu", espaco, "em criaArquivo"
+
         if espaco:
             startMM(self.nome)
             # Marco o espaco como ocupado
-            #if not usedBitmap(self.nome, espaco):
             switchBitmap(self.nome, espaco)
             # Adiciono entrada na pasta pai
             entrada = self.esticaNome(caminho[len(caminho)-1])+struct.pack("h", espaco)+self.getTimeNow()+self.getTimeNow()+self.getTimeNow()+struct.pack("q", 0)
@@ -416,7 +407,7 @@ class SistemaArquivos:
             self.escreveBloco(espaco, struct.pack("h", -1)+struct.pack("h", -1))
             self.FAT[espaco] = -1
             endMM()
-            #self.inicializaFAT()
+
             self.narq += 1
             return True
         else:
@@ -444,7 +435,7 @@ class SistemaArquivos:
         startMM(self.nome)
         for i in xrange(qtd-1):
             novo = self.FirstFit()
-            #print "FirstFit devolveu ", novo, "em copiaArquivo"
+
             if novo:
                 bls.append(novo)
                 switchBitmap(self.nome, novo)
@@ -468,7 +459,6 @@ class SistemaArquivos:
         # Finaliza o bitmap usado no FirstFit
         endMM()
 
-        #print "Estou mandando escrever um tamanho de ", tamanho
         self.atualizaTamanho(destino, tamanho)
         
 
@@ -502,8 +492,6 @@ class SistemaArquivos:
 
         ant = blocoPai
         entrada = self.devolveEntrada(ant, caminho[len(caminho)-1])
-        #print "Esse e o conteudo do arquivo pai e a entrada e", entrada, conteudo
-
         
         if entrada != 0:
             while not entrada and prox != -1:
@@ -513,65 +501,38 @@ class SistemaArquivos:
             
 
         if entrada is not False:
-            print "Achei", arquivo
-            
-            #print "Contador antes", cont
             cont -= 1
-            #print "Contador depois", cont
-            #print "Diretorio antes"
-            #self.leArquivo(ant)
+
             if entrada / ent == cont:
-                #print "Ultima"
                 conteudo = conteudo[:(cont)*ent]+conteudo[(cont+1)*ent:]
-                #print "Agora so tem ", cont, "arquivos"
                 
             else:
-                #print "Meio"
                 ultima = conteudo[(cont)*ent:(cont+1)*ent]
                 conteudo = conteudo[:entrada]+ultima+conteudo[entrada+ent:cont*ent]+conteudo[(cont+1)*ent:]
-                #print "Preciso pegar a ultima entrada e por aqui!"
 
-            #print "Diretorio depois"
             startMM(self.nome)
             self.escreveBloco(ant, struct.pack("h", prox)+struct.pack("h", cont)+conteudo)
             endMM()
-            #self.leArquivo(ant)
             
             # Usando a FAT
             startMM(self.nome)
-            #print "Bloco inicial", bl
+
             pnt = bl
-            #print "Esse lugar ", pnt, "aponta para", self.FAT[pnt]
+
             while self.FAT[pnt] != -1:
-                #if usedBitmap(self.nome, bl):
                 startMM(self.nome)
                 switchBitmap(self.nome, bl)
                 endMM()
                 bl = pnt
                 pnt = self.FAT[pnt]
                 self.FAT[bl] = None
-                #print "Setei a FAT", bl, "para", self.FAT[bl], "prox eh", pnt
-            #if usedBitmap(self.nome, pnt):
+
             startMM(self.nome)
             switchBitmap(self.nome, pnt)
             endMM()
             self.FAT[pnt] = None
-            #print "Setei a FAT", pnt, "para", self.FAT[pnt]
-            
+
             self.narq -= 1
-            # Nao precisaria disso se tivesse FAT
-            #prox, c, ct = self.leBloco(bl)
-            
-            #print "Proximo", prox
-            
-            #while prox != -1:
-            #    switchBitmap(self.nome, bl)
-            #    bl = prox
-            #    print "Esses sao os proximos", prox
-            #    prox, c, ct = self.leBloco(bl)
-
-            #switchBitmap(self.nome, bl)
-
             
         else:
             print "Nao achei", arquivo
@@ -593,7 +554,7 @@ class SistemaArquivos:
                     bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
                     startMM(self.nome)
                     p, c, ctd = self.leBloco(bl[0])
-                    #print "O contador e", c
+                  
                     if c == -1:
                         print "removeu:", diretorio+"/"+nome
                         self.removeArquivo(diretorio+"/"+nome)
@@ -618,7 +579,7 @@ class SistemaArquivos:
                     bl = struct.unpack("h", conteudo[12+i*ent:14+i*ent])
 
                     p, c, ctd = self.leBloco(bl[0])
-                    #print "O contador e", c
+                   
                     if c == -1:
                         print "removeu:", diretorio+"/"+nome
                         self.removeArquivo(diretorio+"/"+nome)
@@ -641,7 +602,7 @@ class SistemaArquivos:
       
         endMM()
 
-
+    #......................................................................
     def espacoLivre(self):
         qtd = 0
         startMM(self.nome)
@@ -651,88 +612,21 @@ class SistemaArquivos:
         endMM()
         return qtd
 
+    #......................................................................
     def df(self):
         print "Informacoes do sistema"
         print self.narq, "arquivo(s)"
         print self.ndir, "diretorio(s)"
         print self.espacoLivre(), "bloco(s) livre(s)"
 
+
+
 #............................
 # MAIN
 #............................
 if __name__=="__main__":
     teste = SistemaArquivos("quarto")
-    # Raiz
-    #teste.escreveBloco(2, struct.pack("h", 4)+struct.pack("h", 2)+"casa\0\0\0\0\0\0\0\0"+struct.pack("h", 5)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000040"+"comida\0\0\0\0\0\0"+struct.pack("h", 6)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000080")
+   
 
-    #teste.escreveBloco(4, struct.pack("h", -1)+struct.pack("h", 0)+ "zczzijisdfj")
-    # CASA
-    #teste.escreveBloco(5, struct.pack("h", -1)+struct.pack("h", 1)+"gato\0\0\0\0\0\0\0\0"+struct.pack("h", 7)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000080")
 
-    #teste.escreveBloco(6, struct.pack("h", -1)+struct.pack("h", 1)+"racao\0\0\0\0\0\0\0"+struct.pack("h", 9)+teste.getTimeNow()+teste.getTimeNow()+teste.getTimeNow()+"000000080"+"AQUI ESTA O CONTEUDO DO ARQUIVO COMIDA")
 
-    #teste.escreveBloco(7, struct.pack("h", -1)+struct.pack("h", -1)+"AQUI ESTA O CONTEUDO DO ARQUIVO GATO")
-
-    #teste.escreveBloco(9, struct.pack("h", -1)+struct.pack("h", -1)+"AQUI ESTA O CONTEUDO DO ARQUIVO RACAO")
-
-    #teste.leArquivo(2)
-    #teste.leArquivo(5)
-    #teste.devolveBloco("/casa/gato")
-    #teste.devolveBloco("/comida/racao")
-    #teste.leArquivo(6)
-    #teste.leArquivo(teste.devolveBloco("/casa/gato"))
-
-    #print teste.devolveBloco("/oi")
-
-    #teste.find("/", "casa")
-
-    #teste.leArquivo(5)
- 
-    #teste.atualizaAcesso("/casa/gato")
-    #teste.leArquivo(5)
-
-    #teste.leArquivo(teste.devolveBloco("/comida"))
-    #teste.criaArquivo("/comida/agua")
-    #teste.leArquivo(teste.devolveBloco("/comida"))
-    #teste.leArquivo(teste.devolveBloco("/comida/agua"))
-
-    #print "Criei o diretorio roupa"
-    #teste.criaDiretorio("/roupa")
-    #teste.leArquivo(teste.devolveBloco("/"))
-    #teste.criaArquivo("/coisa")
-    #print "Criei o diretorio /casa"
-    #teste.criaDiretorio("/casa")
-    #teste.leArquivo(teste.devolveBloco("/"))
-    #print "Criei o diretorio movo"
-    #teste.criaDiretorio("/movo")
-    #teste.leArquivo(teste.devolveBloco("/"))
-
-    #print "Criei arquivo /casa/cachorro"
-    #teste.criaArquivo("/casa/cachorro")
-    #print "Criei diretorio /casa/animal"
-    #teste.criaDiretorio("/casa/animal")
-    #teste.criaArquivo("/casa/animal/bicho")
-    #print "Conteudo de /casa/animal"
-    #teste.leArquivo(teste.devolveBloco("/casa/animal"))
-    #teste.leArquivo(teste.devolveBloco("/casa"))
-    #print "Criei arquivo /gato"
-    #teste.criaArquivo("/gato")
-    #teste.leArquivo(2)
-    #teste.leArquivo(teste.devolveBloco("/gato"))
-    #teste.leArquivo(teste.devolveBloco("/"))
-    #teste.criaArquivo("/copia")
-    #teste.copiaArquivo("gato", teste.devolveBloco("/copia"))
-    #teste.leArquivo(teste.devolveBloco("/copia"))
-    #escreveIntBin("terceiro", 2, 2)
-    #teste.removeArquivo("/la")
-    #teste.removeArquivo("/gaot")
-    #teste.removeArquivo("/acola")
-    teste.removeArquivo("/alface")
-    teste.removeArquivo("/gato")
-    teste.leArquivo(teste.raiz)
-    teste.criaDiretorio("/casa")
-    teste.criaDiretorio("/casa/quarto")
-    teste.criaDiretorio("/casa/cozinha")
-    teste.criaArquivo("/casa/nova")
-    teste.removeDiretorio("/casa/quarto")
-    teste.removeDiretorio("/casa")

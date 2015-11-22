@@ -14,6 +14,8 @@ class SistemaArquivos:
     bitmap = None
     FAT = [None for i in xrange(25000)]
     tam = 4000
+    narq = 0
+    ndir = 0
 
     #..................................................
     def __init__(self, nome):
@@ -24,12 +26,15 @@ class SistemaArquivos:
         #print self.FAT
         try:
             with open(self.nome, 'rb') as fileSystem:
-                print "Sistema existe"
-                self.bitmap = leIntBin(self.nome, 0)
-                self.raiz = leIntBin(self.nome, 2)
-                self.dirs = leIntBin(self.nome, 4)
+                #print "Sistema existe"
+                self.bitmap = 1
+                self.raiz   = 2
+                self.dirs   = 3
+                escreveIntBin(self.nome, 0, self.bitmap)
+                escreveIntBin(self.nome, 2, self.raiz)
+                escreveIntBin(self.nome, 4, self.dirs)
 
-                print self.bitmap, self.raiz, self.dirs
+                #print self.bitmap, self.raiz, self.dirs
                 
         except IOError:
             self.criaSistemaArquivos()
@@ -43,7 +48,7 @@ class SistemaArquivos:
         self.raiz = 2
         self.dirs = 3
 
-        print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
+       # print "Estou criando um novo sistema de arquivos", self.bitmap, self.raiz, self.dirs
 
         # Demora para criar um arquivo de 100MB
         makeEmptyBin(fileSystem, 100000000)
@@ -74,15 +79,19 @@ class SistemaArquivos:
             if self.FAT[i] == None and usedBitmap(self.nome, i):
                 ant = i
                 prox, c, cont = self.leBloco(ant)
+                if c == -1:
+                    self.narq += 1
+                else:
+                    self.ndir += 1
                 while prox != -1 and prox != 0:
                     self.FAT[ant] = prox
-                    print "Mudei a entrada", ant, " da FAT para", prox
+                    #print "Mudei a entrada", ant, " da FAT para", prox
                     ant = prox
                     prox, c, cont = self.leBloco(ant)
-                    print "Esse e o proximo", prox
+                    #print "Esse e o proximo", prox
                 if prox != 0:
                     self.FAT[ant] = prox
-                    print "Mudei a entrada", ant, " da FAT para", prox
+                    #print "Mudei a entrada", ant, " da FAT para", prox
             i += 1
 
         endMM()
@@ -98,20 +107,24 @@ class SistemaArquivos:
         startMM(self.nome)
         for i in xrange(4):
             novo = self.FirstFit()
-            print "FirstFit devolveu", novo, "em criaDiretorio"
+            #print "FirstFit devolveu", novo, "em criaDiretorio"
             if novo:
                 self.escreveBloco(ant, struct.pack("h", novo)+struct.pack("h", 0))
                 switchBitmap(self.nome, novo)
+                self.FAT[ant] = novo
             else:
-                print "Acabou o espaco em criaDiretorio"
+                print "Acabou o espaco"
                 break
 
             ant = novo
         
         self.escreveBloco(ant, struct.pack("h", -1)+struct.pack("h", 0))
+        self.FAT[ant] = -1
+        self.ndir += 1
+        self.narq -= 1
         # Finaliza o bitmap
         endMM()
-        self.inicializaFAT()
+        
 
     #..................................................................
     def devolveBloco(self, nome):
@@ -288,8 +301,7 @@ class SistemaArquivos:
             x = getBitmap(self.nome, 25000)
     
         return x
-        print "ACABOU O ESPACO"
-        return False
+        
 
 
     #..........................................
@@ -324,6 +336,7 @@ class SistemaArquivos:
 
         blocoPai = self.devolveBloco(pai)
 
+        startMM(self.nome)
         prox, cont, conteudo = self.leBloco(blocoPai)
         
         entrada = self.devolveEntrada(blocoPai, caminho[(len(caminho)-1)])
@@ -385,7 +398,7 @@ class SistemaArquivos:
         
         espaco = self.FirstFit()
         endMM()
-        print "FirstFit devolveu", espaco, "em criaArquivo"
+        #print "FirstFit devolveu", espaco, "em criaArquivo"
         if espaco:
             startMM(self.nome)
             # Marco o espaco como ocupado
@@ -403,10 +416,11 @@ class SistemaArquivos:
             self.escreveBloco(espaco, struct.pack("h", -1)+struct.pack("h", -1))
             self.FAT[espaco] = -1
             endMM()
-            self.inicializaFAT()
+            #self.inicializaFAT()
+            self.narq += 1
             return True
         else:
-            print "ACABOU O ESPACO em criaArquivo"
+            print "Acabou o espaco"
             return False
 
 
@@ -430,13 +444,13 @@ class SistemaArquivos:
         startMM(self.nome)
         for i in xrange(qtd-1):
             novo = self.FirstFit()
-            print "FirstFit devolveu ", novo, "em copiaArquivo"
+            #print "FirstFit devolveu ", novo, "em copiaArquivo"
             if novo:
                 bls.append(novo)
                 switchBitmap(self.nome, novo)
                 
             else:
-                print "Nao foi possivel copiar o arquivo"
+                print "Nao foi possivel copiar o arquivo, acabou o espaco"
                 for j in xrange(len(bls)):
                     switchBitmap(self.nome, bls[j])
                 endMM()
@@ -454,9 +468,9 @@ class SistemaArquivos:
         # Finaliza o bitmap usado no FirstFit
         endMM()
 
-        print "Estou mandando escrever um tamanho de ", tamanho
+        #print "Estou mandando escrever um tamanho de ", tamanho
         self.atualizaTamanho(destino, tamanho)
-        self.inicializaFAT()
+        
 
 
     #..................................................
@@ -525,9 +539,9 @@ class SistemaArquivos:
             
             # Usando a FAT
             startMM(self.nome)
-            print "Bloco inicial", bl
+            #print "Bloco inicial", bl
             pnt = bl
-            print "Esse lugar ", pnt, "aponta para", self.FAT[pnt]
+            #print "Esse lugar ", pnt, "aponta para", self.FAT[pnt]
             while self.FAT[pnt] != -1:
                 #if usedBitmap(self.nome, bl):
                 startMM(self.nome)
@@ -536,14 +550,15 @@ class SistemaArquivos:
                 bl = pnt
                 pnt = self.FAT[pnt]
                 self.FAT[bl] = None
-                print "Setei a FAT", bl, "para", self.FAT[bl], "prox eh", pnt
+                #print "Setei a FAT", bl, "para", self.FAT[bl], "prox eh", pnt
             #if usedBitmap(self.nome, pnt):
             startMM(self.nome)
             switchBitmap(self.nome, pnt)
             endMM()
             self.FAT[pnt] = None
-            print "Setei a FAT", pnt, "para", self.FAT[pnt]
+            #print "Setei a FAT", pnt, "para", self.FAT[pnt]
             
+            self.narq -= 1
             # Nao precisaria disso se tivesse FAT
             #prox, c, ct = self.leBloco(bl)
             
@@ -586,6 +601,8 @@ class SistemaArquivos:
                         if c == 0:
                             print "removeu:", diretorio+"/"+nome
                             self.removeArquivo(diretorio+"/"+nome)
+                            self.narq+=1
+                            self.ndir-=1
                         else:
                             self.removeDiretorio(diretorio+"/"+nome)
             else:
@@ -605,6 +622,8 @@ class SistemaArquivos:
                     if c == -1:
                         print "removeu:", diretorio+"/"+nome
                         self.removeArquivo(diretorio+"/"+nome)
+                        self.narq+=1
+                        self.ndir-=1
                     else:
                         if c != 0:
                             print "removeu:", diretorio+"/"+nome
@@ -617,9 +636,26 @@ class SistemaArquivos:
         
         print "removeu:", diretorio
         self.removeArquivo(diretorio)
+        self.narq+=1
+        self.ndir-=1
       
         endMM()
 
+
+    def espacoLivre(self):
+        qtd = 0
+        startMM(self.nome)
+        for i in xrange(25000):
+            if not usedBitmap(self.nome, i):
+                qtd+=1
+        endMM()
+        return qtd
+
+    def df(self):
+        print "Informacoes do sistema"
+        print self.narq, "arquivo(s)"
+        print self.ndir, "diretorio(s)"
+        print self.espacoLivre(), "bloco(s) livre(s)"
 
 #............................
 # MAIN

@@ -91,10 +91,10 @@ if __name__ == "__main__":
 
                 bloco = fileSystem.devolveBloco(nome)
                 if bloco:
-                    print "Ja existia, atualizei"
+                    #print "Ja existia, atualizei"
                     fileSystem.atualizaAcesso(nome)
                 else:
-                    print "Tive que criar pq nao existia"
+                    #print "Tive que criar pq nao existia"
                     fileSystem.criaArquivo(nome)
                     
             except IndexError:
@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
 
         elif cmd[0] == "rm" and montado:
-            print "Quero remover o arquivo"
+            #print "Quero remover o arquivo"
             try:
                 nome = cmd[1]
 
@@ -132,7 +132,8 @@ if __name__ == "__main__":
 
 
         elif cmd[0] == "df" and montado:
-            print "Imprime informacoes"
+            #print "Imprime informacoes"
+            fileSystem.df()
 
 
         elif cmd[0] == "umount" and montado:

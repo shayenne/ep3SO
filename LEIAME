@@ -1,0 +1,78 @@
+----------------------------------------------------
+Execução
+----------------------------------------------------
+Para rodar o simulador de sistema de arquivos digite:
+$ python ep3.py
+
+Os comandos reconhecidos por ele são:
+
+- mount <arquivo>
+  O sistema monta o arquivo que estiver descrito em <arquivo> se ele existir.
+  Caso não exista, cria um novo com 100MB de tamanho.
+  Inicializa o conteúdo do superbloco com os endereços de blocos do gerenciador de espaço, da pasta raiz e do inicio do resto dos arquivos.
+
+- cp <origem> <destino>
+  O sistema lê o arquivo origem e verifica o seu tamanho.
+  Caso haja espaço livre suficiente para copiá-lo, pega blocos de 3996B do arquivo e guarda em blocos do sistema.
+  Atualiza a FAT e o gerenciador de memória
+  
+
+- mkdir <diretorio>
+  O sistema cria um novo diretorio de nome <diretorio>.
+  Acrescenta suas informações ao diretorio pai.
+  Atualiza a FAT e o gerenciador de memória.
+
+- rmdir <diretorio>
+  O sistema verifica se o diretorio está vazio, se estiver, remove suas informações da pasta pai.
+  Se possuir conteúdo, verifica do que se trata. Se for arquivo, remove-o, se for diretório, age recursivamente.
+  Atualiza a FAT e o gerenciador de memória
+
+- cat <arquivo>
+  O sistema procura pelo <arquivo> e imprime o seu conteúdo.  
+
+- touch <arquivo>
+  O sistema atualiza a data de acesso do <arquivo>, caso ele exista.
+  Caso contrário, ele cria um novo arquivo de nome <arquivo> vazio.
+
+- rm <arquivo> 
+  O sistema remove o arquivo de nome <arquivo> e atualiza as informações do diretório pai.
+  Atualiza a FAT e o gerenciador de memória
+
+
+- ls <diretorio>
+  O sistema lista o conteúdo do <diretorio>, diferenciando arquivos e diretorios
+
+- find <diretorio> <arquivo>
+  O sistema devolve todos os caminhos que existirem relacionados a <diretorio> e <arquivo>
+
+- df
+  Exibe informações do sistema como quantidade de arquivos, diretórios e espaço livre.
+
+- umount 
+  Desmonta o sistema de arquivos e limpa as informações da FAT
+  
+- sai
+  Encerra a execução do sistema.
+
+
+--------------------------------------------------------------
+Decisões de implementação:
+--------------------------------------------------------------
+
+O arquivo que contém o sistema de arquivos possui quatro partes:
+- superbloco: Contém os endereços em que iniciam as outras partes
+- gerenciador de memória: Contém os bits 1 ou 0, indicando quais blocos estão sendo usados ou livres
+- diretório raiz: Conteúdo do diretório raiz
+- arquivos e diretórios: Conteúdo dos arquivos e diretórios
+
+Cada diretório possui 5 blocos, nos quais podem ser alocadas 57 entradas.
+As entradas para os diretórios possuem tamanhos fixos de 70 bytes.
+Os bytes de cada entrada descrevem:
+   
+12 - Nome do arquivo/diretório
+ 2 - Ponteiro para primeiro bloco do arquivo/diretório
+16 - Data de criação do arquivo/diretório
+16 - Data de modificação do arquivo/diretório
+16 - Data de acesso do arquivo/diretório
+ 4 - Tamanho arquivo (para diretórios essa informação é irrelevante)
+

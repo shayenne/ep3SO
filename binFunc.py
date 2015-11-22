@@ -26,12 +26,11 @@ def leDados(arquivo, inicio, fim):
         f.close()
     return data
 
+
 # Pos no intervalo [0:25000], refere-se aos bits do bitmap
 # Troca o valor do bitmap da posicao para seu complementar
 def switchBitmap(arqmem, pos):
     global mapmem
-    # Acessa uma posicao especifica do arquivo de memoria
-    #mapmem = memory_map(arqmem)
 
     val = pos/8
     rest = pos % 8
@@ -42,15 +41,14 @@ def switchBitmap(arqmem, pos):
     p^= 1 << rest
     mapmem[val+4000] = chr(p)
 
-   # mapmem.close()
 
 def startMM(arqmem):
     global mapmem
     mapmem = memory_map(arqmem)
 
+
 def getBitmap(arqmem, qtd):
     global mapmem
-    #mapmem = memory_map(arqmem)
 
     for pos in xrange(qtd):
         val = pos/8
@@ -68,8 +66,6 @@ def getBitmap(arqmem, qtd):
 
 def usedBitmap(arqmem, pos):
     global mapmem
-    #mapmem = memory_map(arqmem)
-
 
     val = pos/8
     rest = pos % 8
@@ -84,19 +80,17 @@ def usedBitmap(arqmem, pos):
 
     return False
 
+
 def endMM():
     global mapmem
     mapmem.close()
     
-    
-    
-    
-
 
 def memory_map(filename, access=mmap.ACCESS_WRITE):
     size = os.path.getsize(filename)
     fd = os.open(filename, os.O_RDWR)
     return mmap.mmap(fd, size, access=access)
+
 
 def escreveIntBin(arqmem, ini, pid):
     # Acessa uma posicao especifica do arquivo de memoria
@@ -117,25 +111,19 @@ def leIntBin(arqmem, pos):
 
 def escreveIntervalo(arqmem, ini, fim, conteudo):
     global mapmem
-    # Acessa uma posicao especifica do arquivo de memoria
-    #mapmem = memory_map(arqmem)
 
-    #print len(conteudo), fim-ini
     mapmem[ini:ini+len(conteudo)] = conteudo
 
-    #mapmem.close()
-                    
 
 
 def leIntervalo(arqmem, ini, fim):
     global mapmem
-    # Acessa uma posicao especifica do arquivo de memoria
-    #mapmem = memory_map(arqmem)
+
     data = mapmem[ini : fim]
         
-    #print mapmem[pos]
-    #mapmem.close()
     return data
+
+
 
 if __name__=="__main__":
     escreveDados("test", "2015-10-11 10:29", 0)
@@ -151,12 +139,3 @@ if __name__=="__main__":
 
     print bitmap, raiz, dirs
 
-    #escreveDados("data", bin(100000000), 0)
-
-    #copiaArquivo("test", "me", 10)
-
-    # le dados de um arquivo [inicio, fim)
-    #print leDados("me", 10, 18)
-
-
-    #copiaArquivo("test", "primeiro", 4000)

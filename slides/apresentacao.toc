@@ -8,8 +8,4 @@
 \beamer@subsectionintoc {2}{5}{Arquivos e Diret\IeC {\'o}rios}{9}{0}{2}
 \beamer@subsectionintoc {2}{6}{Atributos}{10}{0}{2}
 \beamer@sectionintoc {3}{Intera\IeC {\c c}\IeC {\~a}o com o simulador}{11}{0}{3}
-\beamer@sectionintoc {4}{Resultados}{14}{0}{4}
-\beamer@subsectionintoc {4}{1}{Sistema de arquivo vazio}{15}{0}{4}
-\beamer@subsectionintoc {4}{2}{Sistema de arquivos com 10MB ocupados}{23}{0}{4}
-\beamer@subsectionintoc {4}{3}{Sistema de arquivos com 50MB ocupados}{31}{0}{4}
-\beamer@sectionintoc {5}{Experimentos}{39}{0}{5}
+\beamer@sectionintoc {4}{Experimentos}{13}{0}{4}

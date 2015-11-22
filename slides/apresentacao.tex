@@ -127,8 +127,8 @@ Sistemas Operacionais
 \begin{frame}
 \frametitle{Suposições adotadas}
 \begin{itemize}
-\item Usuário comportado (não irá criar arquivos e pastas com nomes iguais)
-\item 
+\item Usuário comportado (não irá criar arquivos e pastas com nomes iguais no mesmo nível)
+\item                    (não irá criar aquivos em pastas inexistentes)
 \end{itemize}
 \end{frame}
 
@@ -227,7 +227,7 @@ Visão Geral
 	\item Modificação (16 bytes)
 	\item Acesso (16 bytes)
 	\end{itemize}
-\item Tamanho (9 bytes)
+\item Tamanho (8 bytes)
 \end{itemize}
 
 \begin{figure}
@@ -237,7 +237,7 @@ Visão Geral
 \end{multicols}
 
 \begin{center}
-[Total de 71 bytes]
+[Total de 70 bytes]
 \end{center}
 
 \end{frame}
@@ -259,362 +259,57 @@ Interação com o simulador
 
 \begin{frame}
 \frametitle{Interação o simulador}
-
-
 \begin{itemize}
-\item mount arquivo 
-
-\item espaço ou substitui
-
+\item mount \verb"<arquivo>
+\item cp <origem> <destino>
+\item mkdir <diretorio>
+\item rmdir <diretorio>
+\item cat <arquivo>
+\item touch <arquivo>
+\item rm <arquivo> 
 \end{itemize}
 \end{frame}
 
 
-%------------------------------------------------
-%------------------------------------------------
-
-\begin{frame}
-
-\begin{itemize}
-\frametitle{Interação o simulador}
-\item executa [intervalo]
-
-  Cria listas de espaço livre e os arquivos ep2.mem e ep2.vir preenchidos com '-1'
-  
-  Simula e imprime do estado da memória a cada [intervalo]s
-  
-\item sai
-
-  Termina execução do simulador  
-
-\end{itemize}
-\end{frame}
-
-
-
-%------------------------------------------------
-\section{Resultados} 
-%------------------------------------------------
-\begin{frame}
-\begin{LARGE}
-\begin{center}
-Resultados
-\end{center}
-\end{LARGE}
-\end{frame}
-
-
-
-
-%------------------------------------------------
-\subsection{Sistema de arquivo vazio}
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Sem nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Com nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-
-
-%------------------------------------------------
-\subsection{Sistema de arquivos com 10MB ocupados}
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Sem nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Com nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-
-%------------------------------------------------
-\subsection{Sistema de arquivos com 50MB ocupados}
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-
-
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 50MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Sem nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Com nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
 
 
 %------------------------------------------------
 \section{Experimentos}
 %------------------------------------------------
 \begin{frame}
-\begin{LARGE}
 \begin{center}
+\begin{LARGE}
 Experimentos
-\end{center}
 \end{LARGE}
+
+\begin{tiny}
+Realizado com computador quad core e Ubuntu 14.04.3 LTS
+\end{tiny}
+\end{center}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}
+\frametitle{Cópia} 
+\begin{figure}
+\centering
+\includegraphics[scale=0.45]{vazio1MBpng.png}
+\end{figure}
+\justifying
+
 \end{frame}
 
 
 %------------------------------------------------
 \begin{frame}
-\frametitle{Cópia de um arquivo de 1MB no '/'} 
-
+\frametitle{Remoção} 
+\begin{figure}
+\centering
+\includegraphics[scale=0.45]{remocaopng.png}
+\end{figure}
 \justifying
 \end{frame}
 
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Cópia de um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 1MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 10MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa de um diretório pai com 30 níveis de hierarquia} 
-VAZIA
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa de um diretório pai com 30 níveis de hierarquia} 
-CENTENAS DE ARQUIVOS
-\justifying
-\end{frame}
-
-
-
-
-%------------------------------------------------
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 50MB no '/'} 
-
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção um arquivo de 30MB no '/'} 
-
-\justifying
-\end{frame}
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Sem nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
-
-
-%------------------------------------------------
-\begin{frame}
-\frametitle{Remoção completa com 30 níveis de hierarquia} 
-Com nenhum diretório ou arquivo regular
-\justifying
-\end{frame}
 
 
 \end{document}
